@@ -19,6 +19,12 @@ build/
 .idea/
 *.sublime-workspace
 
+# 后端编译产物
+backend/target/
+
+# 用户上传文件
+backend/uploads/
+
 # 环境配置（如包含敏感信息请取消下面这行的注释）
 # .env
 # .env.local
