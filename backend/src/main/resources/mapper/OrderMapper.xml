@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tourism.mapper.OrderMapper">
+
+    <select id="findByConditions" resultType="com.example.tourism.entity.Order">
+        SELECT * FROM orders
+        WHERE delete_time IS NULL
+        <if test="keyword != null and keyword != ''">
+            AND (order_no LIKE CONCAT('%', #{keyword}, '%') OR hotel_name LIKE CONCAT('%', #{keyword}, '%') OR name LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="status != null and status != ''">AND status = #{status}</if>
+        ORDER BY create_time DESC
+        LIMIT #{page}, #{pageSize}
+    </select>
+
+    <select id="countByConditions" resultType="Long">
+        SELECT COUNT(*) FROM orders
+        WHERE delete_time IS NULL
+        <if test="keyword != null and keyword != ''">
+            AND (order_no LIKE CONCAT('%', #{keyword}, '%') OR hotel_name LIKE CONCAT('%', #{keyword}, '%') OR name LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="status != null and status != ''">AND status = #{status}</if>
+    </select>
+
+    <select id="findById" resultType="com.example.tourism.entity.Order">
+        SELECT * FROM orders WHERE id = #{id} AND delete_time IS NULL
+    </select>
+
+    <select id="findByOrderNo" resultType="com.example.tourism.entity.Order">
+        SELECT * FROM orders WHERE order_no = #{orderNo} AND delete_time IS NULL
+    </select>
+
+    <insert id="insert" parameterType="com.example.tourism.entity.Order" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO orders
+        (order_no, hotel_id, hotel_name, hotel_image, room_name, amount,
+         name, phone, check_in_date, check_out_date, nights,
+         status, user_openid, create_time, update_time)
+        VALUES
+        (#{orderNo}, #{hotelId}, #{hotelName}, #{hotelImage}, #{roomName}, #{amount},
+         #{name}, #{phone}, #{checkInDate}, #{checkOutDate}, #{nights},
+         #{status}, #{userOpenid}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="com.example.tourism.entity.Order">
+        UPDATE orders SET
+            status = #{status}, pay_time = #{payTime},
+            refund_time = #{refundTime}, refund_amount = #{refundAmount},
+            refund_reason = #{refundReason}, update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE orders SET delete_time = NOW() WHERE id = #{id}
+    </delete>
+
+    <update id="updateStatus">
+        UPDATE orders SET status = #{status}, update_time = NOW() WHERE id = #{id}
+    </update>
+</mapper>

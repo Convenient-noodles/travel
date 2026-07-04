@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tourism.mapper.SystemConfigMapper">
+
+    <select id="findByGroupKey" resultType="com.example.tourism.entity.SystemConfig">
+        SELECT * FROM system_config WHERE group_key = #{groupKey} ORDER BY sort_order ASC
+    </select>
+
+    <select id="findByGroupAndKey" resultType="com.example.tourism.entity.SystemConfig">
+        SELECT * FROM system_config WHERE group_key = #{groupKey} AND config_key = #{configKey}
+    </select>
+
+    <select id="findAll" resultType="com.example.tourism.entity.SystemConfig">
+        SELECT * FROM system_config ORDER BY group_key ASC, sort_order ASC
+    </select>
+
+    <insert id="insert" parameterType="com.example.tourism.entity.SystemConfig">
+        INSERT INTO system_config 
+        (group_key, config_key, config_value, config_name, config_type, config_options, 
+        sort_order, is_system, remark, create_time, update_time)
+        VALUES 
+        (#{groupKey}, #{configKey}, #{configValue}, #{configName}, #{configType}, #{configOptions}, 
+        #{sortOrder}, #{isSystem}, #{remark}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="com.example.tourism.entity.SystemConfig">
+        UPDATE system_config SET
+            config_value = #{configValue}, config_name = #{configName}, config_type = #{configType},
+            config_options = #{configOptions}, sort_order = #{sortOrder}, is_system = #{isSystem},
+            remark = #{remark}, update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateValue">
+        UPDATE system_config SET config_value = #{configValue}, update_time = NOW() 
+        WHERE group_key = #{groupKey} AND config_key = #{configKey}
+    </update>
+</mapper>

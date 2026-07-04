@@ -1,0 +1,194 @@
+<view class="payment-container">
+  <!-- ========== 第一步：确认订单信息 ========== -->
+  <block wx:if="{{step === 'confirm'}}">
+    <view class="order-summary">
+      <view class="summary-card">
+        <image class="hotel-thumb" src="{{hotelImage}}" mode="aspectFill" wx:if="{{hotelImage}}"></image>
+        <view class="hotel-thumb-placeholder" wx:else>🏨</view>
+        <view class="summary-info">
+          <text class="hotel-name">{{hotelName}}</text>
+          <text class="room-name">{{roomName}}</text>
+          <view class="date-row">
+            <text class="date-label">入住</text>
+            <text class="date-value">{{checkInDate}}</text>
+          </view>
+          <view class="date-row">
+            <text class="date-label">退房</text>
+            <text class="date-value">{{checkOutDate}}</text>
+          </view>
+          <view class="date-row">
+            <text class="date-label">共</text>
+            <text class="date-value">{{nights}}晚</text>
+          </view>
+        </view>
+      </view>
+      <view class="price-row">
+        <text class="price-label">房间总价</text>
+        <view class="price-value">
+          <text class="currency">¥</text>
+          <text class="amount">{{amount}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="guest-form">
+      <text class="form-title">入住人信息</text>
+      <view class="form-item">
+        <text class="form-label">姓名</text>
+        <input class="form-input" placeholder="请输入入住人姓名" value="{{name}}" bindinput="onNameInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">手机号</text>
+        <input class="form-input" type="number" maxlength="11" placeholder="请输入手机号码" value="{{phone}}" bindinput="onPhoneInput" />
+      </view>
+    </view>
+
+    <view class="bottom-bar">
+      <view class="total-price">
+        <text class="total-label">合计</text>
+        <text class="total-amount">¥{{amount}}</text>
+      </view>
+      <view class="submit-btn" bindtap="onConfirmOrder">
+        <text>提交订单</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- ========== 第二步：扫码支付 ========== -->
+  <block wx:if="{{step === 'pay'}}">
+    <view class="qr-header">
+      <text class="qr-title">微信扫码支付</text>
+      <text class="qr-subtitle">保存二维码 → 打开微信扫一扫 → 扫码支付</text>
+    </view>
+
+    <view class="order-mini-card">
+      <view class="mini-row">
+        <text class="mini-label">{{hotelName}}</text>
+        <text class="mini-amount">¥{{amount}}</text>
+      </view>
+      <view class="mini-row">
+        <text class="mini-desc">{{roomName}} · {{checkInDate}} 入住 · {{nights}}晚</text>
+      </view>
+      <view class="mini-row">
+        <text class="mini-order">订单号：{{orderNo}}</text>
+      </view>
+    </view>
+
+    <view class="qr-section">
+      <view class="qr-card">
+        <view class="qr-code-wrapper" bindtap="onPreviewQrCode" wx:if="{{qrCode}}">
+          <image class="qr-image" src="{{qrCode}}" mode="aspectFit"></image>
+          <view class="qr-tap-hint">点击放大</view>
+        </view>
+
+        <view class="qr-empty" wx:else>
+          <view class="empty-icon">💳</view>
+          <text class="empty-title">暂未上传收款码</text>
+          <text class="empty-desc">该酒店尚未设置微信收款二维码</text>
+          <text class="empty-tip">请联系酒店商家上传收款码后再支付</text>
+        </view>
+
+        <view class="qr-amount">
+          <text class="qr-amount-label">支付金额</text>
+          <text class="qr-amount-value">¥{{amount}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{qrCode}}">
+      <view class="qr-actions">
+        <view class="qr-action-btn save-btn" bindtap="onSaveQrCode">
+          <text class="action-icon">💾</text>
+          <text class="action-text">保存收款码</text>
+        </view>
+        <view class="qr-action-hint">
+          <text>或长按上方二维码保存</text>
+        </view>
+      </view>
+
+      <view class="pay-steps">
+        <text class="steps-title">📋 支付步骤</text>
+        <view class="step-item">
+          <view class="step-num">1</view>
+          <text class="step-text">点击"保存收款码"或长按二维码保存到相册</text>
+        </view>
+        <view class="step-item">
+          <view class="step-num">2</view>
+          <text class="step-text">打开微信 → 扫一扫 → 从相册选择二维码</text>
+        </view>
+        <view class="step-item">
+          <view class="step-num">3</view>
+          <text class="step-text">输入金额 ¥{{amount}} 完成支付</text>
+        </view>
+        <view class="step-item">
+          <view class="step-num">4</view>
+          <text class="step-text">返回此页面，点击下方"已完成支付"</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="pay-no-qr" wx:else>
+      <text class="no-qr-hint">暂时无法扫码支付，您可以使用以下方式：</text>
+      <view class="phone-pay-btn" bindtap="onConfirmPaid">
+        <text>☎️ 电话联系酒店支付</text>
+      </view>
+    </view>
+
+    <view class="confirm-pay-bar">
+      <view class="confirm-btn" bindtap="onConfirmPaid">
+        <text>✅ 已完成支付</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- ========== 第三步：支付结果 ========== -->
+  <block wx:if="{{step === 'result'}}">
+    <view class="result-card">
+      <view class="result-icon">✅</view>
+      <text class="result-title">预订成功</text>
+      <text class="result-desc">酒店将为您保留房间，请按时入住</text>
+
+      <!-- 后台同步状态 -->
+      <view class="sync-badge" wx:if="{{payResult.syncedToBackend}}">
+        <text class="sync-icon">☁️</text>
+        <text class="sync-text">已同步到商家后台</text>
+      </view>
+      <view class="sync-badge sync-fail" wx:else>
+        <text class="sync-icon">⚠️</text>
+        <text class="sync-text">暂未同步到后台</text>
+        <view class="retry-sync-btn" catchtap="retrySyncToBackend">点击重试</view>
+      </view>
+
+      <view class="result-detail">
+        <view class="detail-row">
+          <text class="detail-label">订单编号</text>
+          <text class="detail-value">{{payResult.orderNo}}</text>
+        </view>
+        <view class="detail-row">
+          <text class="detail-label">酒店</text>
+          <text class="detail-value">{{hotelName}}</text>
+        </view>
+        <view class="detail-row">
+          <text class="detail-label">房型</text>
+          <text class="detail-value">{{roomName}}</text>
+        </view>
+        <view class="detail-row">
+          <text class="detail-label">入住</text>
+          <text class="detail-value">{{checkInDate}} - {{checkOutDate}}</text>
+        </view>
+        <view class="detail-row highlight">
+          <text class="detail-label">金额</text>
+          <text class="detail-value amount">¥{{amount}}</text>
+        </view>
+      </view>
+      <view class="result-actions">
+        <view class="action-btn back-btn" bindtap="onViewOrder">
+          <text>返回</text>
+        </view>
+        <view class="action-btn home-btn" bindtap="onBackToList">
+          <text>返回首页</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

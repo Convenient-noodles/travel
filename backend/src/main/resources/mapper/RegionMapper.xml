@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tourism.mapper.RegionMapper">
+
+    <select id="findByParentCode" resultType="com.example.tourism.entity.Region">
+        SELECT * FROM regions WHERE parent_code = #{parentCode} AND is_enabled = 1 ORDER BY sort_order ASC
+    </select>
+
+    <select id="findByLevel" resultType="com.example.tourism.entity.Region">
+        SELECT * FROM regions WHERE level = #{level} AND is_enabled = 1 ORDER BY sort_order ASC
+    </select>
+
+    <select id="findById" resultType="com.example.tourism.entity.Region">
+        SELECT * FROM regions WHERE id = #{id}
+    </select>
+
+    <select id="findByCode" resultType="com.example.tourism.entity.Region">
+        SELECT * FROM regions WHERE code = #{code}
+    </select>
+
+    <insert id="insert" parameterType="com.example.tourism.entity.Region" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO regions
+        (name, code, parent_code, level, pinyin, lng, lat, sort_order, is_enabled, create_time, update_time)
+        VALUES
+        (#{name}, #{code}, #{parentCode}, #{level}, #{pinyin}, #{lng}, #{lat},
+        #{sortOrder}, #{isEnabled}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="com.example.tourism.entity.Region">
+        UPDATE regions SET
+            name = #{name}, code = #{code}, parent_code = #{parentCode}, level = #{level},
+            pinyin = #{pinyin}, lng = #{lng}, lat = #{lat}, sort_order = #{sortOrder},
+            is_enabled = #{isEnabled}, update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM regions WHERE id = #{id}
+    </delete>
+</mapper>

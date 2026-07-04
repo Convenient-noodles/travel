@@ -1,0 +1,101 @@
+<view class="about-container">
+  <view class="nav-bar" style="height: {{navBarHeight}}rpx; padding-top: {{safeAreaTop}}rpx;">
+    <view class="nav-back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">关于我们</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <scroll-view class="content-area" scroll-y style="margin-top: {{contentTop}}rpx;">
+    <view class="about-content">
+      <view class="logo-section">
+        <view class="app-icon">黔</view>
+        <text class="app-name">带你黔游</text>
+        <text class="app-version">版本 v1.0.0</text>
+      </view>
+
+      <view class="intro-section">
+        <text class="section-title">应用简介</text>
+        <text class="section-text">带你黔游是一款专注于贵州旅游的小程序，为您提供贵州景点介绍、旅游攻略、美食推荐、住宿预订等服务，带您玩转贵州，感受黔山贵水的独特魅力。</text>
+      </view>
+
+      <view class="guizhou-section">
+        <text class="section-title">贵州旅游简介</text>
+        <view class="guizhou-card">
+          <image class="guizhou-image" src="/images/a1.jpg" mode="aspectFill"></image>
+          <view class="guizhou-info">
+            <text class="guizhou-name">黄果树瀑布</text>
+            <text class="guizhou-desc">亚洲第一大瀑布，气势磅礴</text>
+          </view>
+        </view>
+        <view class="guizhou-card">
+          <image class="guizhou-image" src="/images/a2.jpg" mode="aspectFill"></image>
+          <view class="guizhou-info">
+            <text class="guizhou-name">百里杜鹃</text>
+            <text class="guizhou-desc">地球彩带，世界花园</text>
+          </view>
+        </view>
+        <view class="guizhou-card">
+          <image class="guizhou-image" src="/images/a3.jpg" mode="aspectFill"></image>
+          <view class="guizhou-info">
+            <text class="guizhou-name">梵净山</text>
+            <text class="guizhou-desc">中国第五大佛教名山</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="features-section">
+        <text class="section-title">核心功能</text>
+        <view class="feature-list">
+          <view class="feature-item">
+            <text class="feature-icon">🏔️</text>
+            <text class="feature-name">景点介绍</text>
+          </view>
+          <view class="feature-item">
+            <text class="feature-icon">📖</text>
+            <text class="feature-name">旅游攻略</text>
+          </view>
+          <view class="feature-item">
+            <text class="feature-icon">🍜</text>
+            <text class="feature-name">美食推荐</text>
+          </view>
+          <view class="feature-item">
+            <text class="feature-icon">🏨</text>
+            <text class="feature-name">住宿预订</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="contact-section">
+        <text class="section-title">联系我们</text>
+        <view class="contact-item" bindtap="onCall">
+          <text class="contact-icon">📞</text>
+          <text class="contact-text">客服电话：400-888-8888</text>
+        </view>
+        <view class="contact-item" bindtap="onEmail">
+          <text class="contact-icon">✉️</text>
+          <text class="contact-text">邮箱：service@dainiqianyou.com</text>
+        </view>
+        <view class="contact-item">
+          <text class="contact-icon">📍</text>
+          <text class="contact-text">地址：贵州省贵阳市南明区花果园</text>
+        </view>
+      </view>
+
+      <view class="links-section">
+        <view class="link-item" bindtap="onPrivacy">
+          <text class="link-text">《隐私政策》</text>
+        </view>
+        <view class="link-item" bindtap="onAgreement">
+          <text class="link-text">《用户协议》</text>
+        </view>
+      </view>
+
+      <view class="copyright">
+        <text class="copyright-text">© 2026 带你黔游 版权所有</text>
+        <text class="copyright-text">黔ICP备XXXXXXXX号-1</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

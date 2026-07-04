@@ -1,0 +1,71 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/discover/discover",
+    "pages/my/my",
+    "pages/my-orders/my-orders",
+    "pages/my-bookings/my-bookings",
+    "pages/list/list",
+    "pages/scenic-detail/scenic-detail",
+    "pages/collection/collection",
+    "pages/feedback/feedback",
+    "pages/search/search",
+    "pages/navigation/navigation",
+    "pages/history/history",
+    "pages/about/about"
+  ],
+  "subpackages": [
+    {
+      "root": "packageDetail",
+      "pages": [
+        "pages/strategy-detail/strategy-detail",
+        "pages/culture-detail/culture-detail",
+        "pages/red-detail/red-detail",
+        "pages/route-detail/route-detail"
+      ]
+    },
+    {
+      "root": "packageFood",
+      "pages": [
+        "pages/food/food",
+        "pages/food-detail/food-detail"
+      ]
+    },
+    {
+      "root": "packageHotel",
+      "pages": [
+        "pages/hotel/hotel",
+        "pages/hotel-detail/hotel-detail",
+        "pages/hotel-payment/hotel-payment"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "all",
+      "packages": ["packageHotel", "packageFood"]
+    },
+    "pages/discover/discover": {
+      "network": "wifi",
+      "packages": ["packageDetail"]
+    }
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "带你黔游",
+    "navigationBarTextStyle": "black"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于导航到景点、实时计算到酒店的距离，以及查找附近的住宿服务"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

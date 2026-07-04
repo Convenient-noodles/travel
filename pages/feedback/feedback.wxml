@@ -1,0 +1,46 @@
+<view class="feedback-container">
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="header-title">意见反馈</text>
+    <view class="header-placeholder"></view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y="true">
+    <view class="form-section">
+      <view class="form-title">反馈内容</view>
+      <textarea 
+        class="content-input" 
+        placeholder="请输入您的问题描述或建议内容..." 
+        bindinput="onInputContent" 
+        value="{{feedbackContent}}" 
+        maxlength="500"
+        placeholder-class="placeholder-style"
+        focus="{{inputFocus}}"
+      ></textarea>
+      <view class="word-count">{{feedbackContent.length}}/500</view>
+    </view>
+
+    <view class="form-section">
+      <view class="form-title">联系方式（选填）</view>
+      <input 
+        class="contact-input" 
+        placeholder="请输入手机号或邮箱，方便我们与您联系" 
+        bindinput="onInputContact" 
+        value="{{contactInfo}}" 
+        placeholder-class="placeholder-style"
+      />
+    </view>
+  </scroll-view>
+
+  <view class="submit-section">
+    <button class="submit-btn {{submitting ? 'submitting' : ''}}" bindtap="submitFeedback" disabled="{{submitting}}">
+      <view class="btn-content" wx:if="{{!submitting}}">提交</view>
+      <view class="btn-content loading" wx:else>
+        <view class="loading-spinner"></view>
+        <text>提交中...</text>
+      </view>
+    </button>
+  </view>
+</view>

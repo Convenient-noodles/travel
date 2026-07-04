@@ -1,0 +1,84 @@
+<view class="discover-container">
+  <view class="nav-bar" style="height: {{navBarHeight}}rpx; padding-top: {{safeAreaTop}}rpx;">
+    <view class="nav-back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">发现</text>
+    <view class="nav-search-btn" bindtap="onSearch">
+      <text class="search-icon">🔍</text>
+    </view>
+  </view>
+
+  <view class="tab-bar" style="top: {{navBarHeight}}rpx;">
+    <scroll-view class="tab-scroll" scroll-x enable-flex>
+      <view class="tab-list">
+        <view
+          class="tab-item {{currentTab === index ? 'active' : ''}}"
+          wx:for="{{tabs}}"
+          wx:key="index"
+          data-index="{{index}}"
+          bindtap="onTabChange"
+        >
+          <text class="tab-text">{{item}}</text>
+          <view class="tab-underline" wx:if="{{currentTab === index}}"></view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="content-area" style="margin-top: {{contentTop}}rpx;">
+    <scroll-view
+      class="article-scroll"
+      scroll-y
+      enable-back-to-top
+      bindscrolltolower="onLoadMore"
+      bindrefresherrefresh="onPullRefresh"
+      refresher-enabled
+      refresher-triggered="{{refreshing}}"
+    >
+      <view class="article-list">
+        <view
+          class="article-card"
+          wx:for="{{articleList}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onArticleTap"
+        >
+          <view class="card-image-wrapper">
+            <image
+              class="card-image"
+              src="{{item.coverImage}}"
+              mode="aspectFill"
+              lazy-load
+            ></image>
+            <view class="card-tag">{{item.category}}</view>
+          </view>
+          <view class="card-content">
+            <text class="card-title">{{item.title}}</text>
+            <view class="card-meta">
+              <text class="card-date">{{item.publishDate}}</text>
+              <view class="card-views">
+                <text class="views-icon">👁</text>
+                <text class="views-count">{{item.views}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="loading-more" wx:if="{{loading}}">
+        <view class="loading-spinner"></view>
+        <text class="loading-text">加载中...</text>
+      </view>
+
+      <view class="no-more" wx:if="{{noMore}}">
+        <text class="no-more-text">已显示全部内容</text>
+      </view>
+
+      <view class="empty-tip" wx:if="{{!loading && articleList.length === 0}}">
+        <text class="empty-icon">📭</text>
+        <text class="empty-text">暂无内容</text>
+      </view>
+    </scroll-view>
+  </view>
+</view>

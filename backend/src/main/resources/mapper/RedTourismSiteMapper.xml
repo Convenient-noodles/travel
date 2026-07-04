@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tourism.mapper.RedTourismSiteMapper">
+
+    <select id="findByConditions" resultType="com.example.tourism.entity.RedTourismSite">
+        SELECT * FROM red_tourism_sites 
+        WHERE delete_time IS NULL
+        <if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>
+        <if test="region != null and region != ''">AND region = #{region}</if>
+        <if test="type != null and type != ''">AND type = #{type}</if>
+        ORDER BY sort_order DESC, create_time DESC
+        LIMIT #{page}, #{pageSize}
+    </select>
+
+    <select id="countByConditions" resultType="Long">
+        SELECT COUNT(*) FROM red_tourism_sites 
+        WHERE delete_time IS NULL
+        <if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>
+        <if test="region != null and region != ''">AND region = #{region}</if>
+        <if test="type != null and type != ''">AND type = #{type}</if>
+    </select>
+
+    <select id="findById" resultType="com.example.tourism.entity.RedTourismSite">
+        SELECT * FROM red_tourism_sites WHERE id = #{id} AND delete_time IS NULL
+    </select>
+
+    <insert id="insert" parameterType="com.example.tourism.entity.RedTourismSite" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO red_tourism_sites 
+        (name, cover_image, images, type, region, address, latitude, longitude, 
+        description, history, significance, ticket_info, open_time, traffic_info, 
+        tips, tags, rating, visit_count, is_recommended, sort_order, status, 
+        create_time, update_time)
+        VALUES 
+        (#{name}, #{coverImage}, #{images}, #{type}, #{region}, #{address}, #{latitude}, 
+        #{longitude}, #{description}, #{history}, #{significance}, #{ticketInfo}, 
+        #{openTime}, #{trafficInfo}, #{tips}, #{tags}, #{rating}, #{visitCount}, 
+        #{isRecommended}, #{sortOrder}, #{status}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="com.example.tourism.entity.RedTourismSite">
+        UPDATE red_tourism_sites SET
+            name = #{name}, cover_image = #{coverImage}, images = #{images}, type = #{type},
+            region = #{region}, address = #{address}, latitude = #{latitude}, longitude = #{longitude},
+            description = #{description}, history = #{history}, significance = #{significance},
+            ticket_info = #{ticketInfo}, open_time = #{openTime}, traffic_info = #{trafficInfo},
+            tips = #{tips}, tags = #{tags}, rating = #{rating}, visit_count = #{visitCount},
+            is_recommended = #{isRecommended}, sort_order = #{sortOrder}, status = #{status},
+            update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM red_tourism_sites WHERE id = #{id}
+    </delete>
+
+    <update id="updateRecommend">
+        UPDATE red_tourism_sites SET is_recommended = #{isRecommended}, update_time = NOW() WHERE id = #{id}
+    </update>
+</mapper>

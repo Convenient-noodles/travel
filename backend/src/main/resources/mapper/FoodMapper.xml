@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tourism.mapper.FoodMapper">
+
+    <resultMap id="FoodResultMap" type="com.example.tourism.entity.Food">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="coverImage" column="cover_image"/>
+        <result property="images" column="images" jdbcType="VARCHAR"/>
+        <result property="region" column="region"/>
+        <result property="address" column="address"/>
+        <result property="latitude" column="latitude"/>
+        <result property="longitude" column="longitude"/>
+        <result property="category" column="category"/>
+        <result property="taste" column="taste"/>
+        <result property="price" column="price"/>
+        <result property="description" column="description"/>
+        <result property="recommendedDishes" column="recommended_dishes" jdbcType="VARCHAR"/>
+        <result property="openTime" column="open_time"/>
+        <result property="phone" column="phone"/>
+        <result property="tags" column="tags"/>
+        <result property="rating" column="rating"/>
+        <result property="highlights" column="highlights"/> <!--【改】SQL层已用CAST转换，此处无需typeHandler-->
+        <result property="craft" column="craft"/> <!--【改】SQL层已用CAST转换，此处无需typeHandler-->
+        <result property="isRecommended" column="is_recommended"/>
+        <result property="sortOrder" column="sort_order"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleteTime" column="delete_time"/>
+    </resultMap>
+
+    <!--【改】显式列名+CAST转换BLOB字段为CHAR，避免JDBC驱动返回BLOB类型导致MyBatis映射失败-->
+    <sql id="FoodColumns">
+        id, name, cover_image,
+        CAST(images AS CHAR) as images,
+        region, address, latitude, longitude, category,
+        taste, price,
+        CAST(description AS CHAR) as description,
+        CAST(recommended_dishes AS CHAR) as recommended_dishes,
+        open_time, phone, tags, rating,
+        CAST(highlights AS CHAR) as highlights,
+        CAST(craft AS CHAR) as craft,
+        is_recommended, sort_order, status,
+        create_time, update_time, delete_time
+    </sql>
+
+    <select id="findByConditions" resultMap="FoodResultMap">
+        SELECT <include refid="FoodColumns"/>
+        FROM foods 
+        WHERE delete_time IS NULL
+        <if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>
+        <if test="region != null and region != ''">AND region = #{region}</if>
+        <if test="category != null and category != ''">AND category = #{category}</if>
+        <if test="status != null">AND status = #{status}</if>
+        ORDER BY sort_order DESC, create_time DESC
+        LIMIT #{page}, #{pageSize}
+    </select>
+
+    <select id="countByConditions" resultType="Long">
+        SELECT COUNT(*) FROM foods 
+        WHERE delete_time IS NULL
+        <if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>
+        <if test="region != null and region != ''">AND region = #{region}</if>
+        <if test="category != null and category != ''">AND category = #{category}</if>
+        <if test="status != null">AND status = #{status}</if>
+    </select>
+
+    <select id="findById" resultMap="FoodResultMap">
+        SELECT <include refid="FoodColumns"/>
+        FROM foods WHERE id = #{id} AND delete_time IS NULL
+    </select>
+
+    <insert id="insert" parameterType="com.example.tourism.entity.Food" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO foods 
+        (name, cover_image, images, region, address, latitude, longitude, category, taste, 
+        price, description, recommended_dishes, open_time, phone, tags, rating, highlights, craft,
+        is_recommended, sort_order, status, create_time, update_time)
+        VALUES 
+        (#{name}, #{coverImage}, #{images}, #{region}, #{address}, #{latitude}, #{longitude}, 
+        #{category}, #{taste}, #{price}, #{description}, #{recommendedDishes}, #{openTime}, 
+        #{phone}, #{tags}, #{rating}, #{highlights}, #{craft}, #{isRecommended}, #{sortOrder}, #{status}, 
+        #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="com.example.tourism.entity.Food">
+        UPDATE foods SET
+            name = #{name}, cover_image = #{coverImage}, images = #{images}, region = #{region},
+            address = #{address}, latitude = #{latitude}, longitude = #{longitude},
+            category = #{category}, taste = #{taste}, price = #{price}, description = #{description},
+            recommended_dishes = #{recommendedDishes}, open_time = #{openTime}, phone = #{phone},
+            tags = #{tags}, rating = #{rating}, highlights = #{highlights}, craft = #{craft},
+            is_recommended = #{isRecommended}, sort_order = #{sortOrder}, status = #{status}, update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM foods WHERE id = #{id}
+    </delete>
+
+    <update id="updateRecommend">
+        UPDATE foods SET is_recommended = #{isRecommended}, update_time = NOW() WHERE id = #{id}
+    </update>
+</mapper>

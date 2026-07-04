@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tourism.mapper.BannerMapper">
+
+    <resultMap id="BannerResultMap" type="com.example.tourism.entity.Banner">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="subtitle" property="subtitle"/>
+        <result column="image_url" property="image"/>
+        <result column="link_type" property="type"/>
+        <result column="link_value" property="targetId"/>
+        <result column="link_url" property="targetUrl"/>
+        <result column="sort_order" property="sort"/>
+        <result column="is_enabled" property="enabled"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="BannerResultMap">
+        SELECT id, title, COALESCE(description, '') as subtitle, image_url, link_type, link_value, link_url, sort_order, is_enabled, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC
+    </select>
+
+    <select id="findEnabled" resultMap="BannerResultMap">
+        SELECT id, title, COALESCE(description, '') as subtitle, image_url, link_type, link_value, link_url, sort_order, is_enabled, create_time, update_time FROM banners WHERE is_enabled = 1 ORDER BY sort_order DESC
+    </select>
+    
+    <select id="findByPage" resultMap="BannerResultMap">
+        SELECT id, title, COALESCE(description, '') as subtitle, image_url, link_type, link_value, link_url, sort_order, is_enabled, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT #{offset}, #{pageSize}
+    </select>
+    
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM banners
+    </select>
+
+    <select id="findById" resultMap="BannerResultMap">
+        SELECT id, title, COALESCE(description, '') as subtitle, image_url, link_type, link_value, link_url, sort_order, is_enabled, create_time, update_time FROM banners WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.example.tourism.entity.Banner" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO banners 
+        (title, description, image_url, link_type, link_value, link_url, sort_order, is_enabled, create_time, update_time)
+        VALUES 
+        (#{title}, #{subtitle}, #{image}, #{type}, #{targetId}, #{targetUrl}, #{sort}, #{enabled}, NOW(), NOW())
+    </insert>
+
+    <update id="update" parameterType="com.example.tourism.entity.Banner">
+        UPDATE banners SET
+            title = #{title}, description = #{subtitle}, image_url = #{image},
+            link_type = #{type}, link_value = #{targetId}, link_url = #{targetUrl},
+            sort_order = #{sort}, is_enabled = #{enabled}, update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM banners WHERE id = #{id}
+    </delete>
+
+    <update id="updateEnabled">
+        UPDATE banners SET is_enabled = #{isEnabled}, update_time = NOW() WHERE id = #{id}
+    </update>
+
+    <update id="updateSortOrder">
+        UPDATE banners SET sort_order = #{sortOrder}, update_time = NOW() WHERE id = #{id}
+    </update>
+
+    <update id="updateClickCount">
+        UPDATE banners SET click_count = click_count + 1 WHERE id = #{id}
+    </update>
+
+</mapper>

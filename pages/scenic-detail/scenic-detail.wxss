@@ -1,0 +1,402 @@
+.detail-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.loading-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 6rpx solid rgba(46, 204, 113, 0.3);
+  border-top-color: #2ECC71;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: 24rpx;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.back-btn {
+  width: 70rpx;
+  height: 70rpx;
+  margin-left: 20rpx;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.back-btn:active {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.back-icon {
+  font-size: 40rpx;
+  color: #fff;
+  font-weight: bold;
+}
+
+.image-carousel {
+  position: relative;
+  width: 100%;
+  height: 520rpx;
+  overflow: hidden;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-image.active {
+  opacity: 1;
+}
+
+.prev-btn,
+.next-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 72rpx;
+  height: 72rpx;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.prev-btn:active,
+.next-btn:active {
+  background: rgba(0, 0, 0, 0.6);
+  transform: translateY(-50%) scale(0.9);
+}
+
+.prev-btn {
+  left: 20rpx;
+}
+
+.next-btn {
+  right: 20rpx;
+}
+
+.arrow {
+  font-size: 56rpx;
+  color: #fff;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.carousel-indicator {
+  position: absolute;
+  bottom: 24rpx;
+  right: 24rpx;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8rpx 20rpx;
+  border-radius: 25rpx;
+}
+
+.indicator-text {
+  font-size: 24rpx;
+  color: #fff;
+  margin-right: 16rpx;
+}
+
+.indicator-dots {
+  display: flex;
+  gap: 12rpx;
+}
+
+.dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  width: 24rpx;
+  border-radius: 6rpx;
+  background: #fff;
+}
+
+.single-image {
+  position: relative;
+  width: 100%;
+  height: 520rpx;
+}
+
+.single-img {
+  width: 100%;
+  height: 100%;
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30rpx;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.scenic-name {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+}
+
+.info-section {
+  background: #fff;
+  padding: 24rpx 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.location-box {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  background: #f0f9f4;
+  padding: 16rpx 20rpx;
+  border-radius: 12rpx;
+  transition: background 0.3s ease;
+}
+
+.location-box:active {
+  background: #e0f0e8;
+}
+
+.location-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.location-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+.navigate-hint {
+  font-size: 22rpx;
+  color: #2ECC71;
+  margin-left: 12rpx;
+  white-space: nowrap;
+}
+
+.rating-box {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #FFF8E1, #FFECB3);
+  padding: 12rpx 20rpx;
+  border-radius: 25rpx;
+  margin-left: 20rpx;
+}
+
+.star {
+  font-size: 32rpx;
+  color: #FFD700;
+  margin-right: 8rpx;
+}
+
+.rating-value {
+  font-size: 30rpx;
+  color: #FF9800;
+  font-weight: 600;
+}
+
+.collect-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx;
+  border-radius: 16rpx;
+  background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+  transition: all 0.3s ease;
+}
+
+.collect-btn:active {
+  transform: scale(0.98);
+}
+
+.collect-btn.collected {
+  background: linear-gradient(135deg, #FFEBEE, #FFCDD2);
+}
+
+.collect-icon {
+  font-size: 40rpx;
+  margin-right: 12rpx;
+}
+
+.collect-text {
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+.collect-btn.collected .collect-text {
+  color: #E53935;
+}
+
+.content {
+  height: calc(100vh - 520rpx - 200rpx - env(safe-area-inset-bottom));
+  padding: 0 20rpx 30rpx;
+}
+
+.section {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-icon {
+  font-size: 36rpx;
+  margin-right: 12rpx;
+}
+
+.section-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.description {
+  background: #f9f9f9;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.desc-text {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.feature-tag {
+  background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+  padding: 14rpx 24rpx;
+  border-radius: 25rpx;
+  transition: transform 0.2s ease;
+}
+
+.feature-tag:active {
+  transform: scale(0.95);
+}
+
+.tag-text {
+  font-size: 26rpx;
+  color: #2ECC71;
+}
+
+.tips-box {
+  display: flex;
+  background: #E3F2FD;
+  border-radius: 12rpx;
+  padding: 24rpx;
+}
+
+.tips-orange {
+  background: #FFF3E0;
+}
+
+.tips-text {
+  flex: 1;
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.nav-btn-box {
+  margin-top: 20rpx;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx;
+  background: linear-gradient(135deg, #2ECC71, #27AE60);
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.nav-btn-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.nav-btn-text {
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: 500;
+}

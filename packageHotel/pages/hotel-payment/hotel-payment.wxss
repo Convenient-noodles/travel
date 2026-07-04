@@ -1,0 +1,265 @@
+.payment-container {
+  min-height: 100vh;
+  background: #f5f6fa;
+  padding-bottom: 140rpx;
+}
+
+/* ========== 订单确认页 ========== */
+.order-summary {
+  background: #fff;
+  margin: 20rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.summary-card {
+  display: flex; gap: 20rpx; align-items: flex-start;
+}
+
+.hotel-thumb {
+  width: 140rpx; height: 140rpx; border-radius: 12rpx; flex-shrink: 0;
+}
+
+.hotel-thumb-placeholder {
+  width: 140rpx; height: 140rpx; border-radius: 12rpx;
+  background: #f0f0f0; display: flex; align-items: center; justify-content: center;
+  font-size: 48rpx; flex-shrink: 0;
+}
+
+.summary-info {
+  flex: 1; display: flex; flex-direction: column; gap: 8rpx;
+}
+
+.hotel-name { font-size: 30rpx; font-weight: 600; color: #1a1a1a; }
+.room-name { font-size: 26rpx; color: #666; }
+.date-row { display: flex; gap: 16rpx; align-items: center; }
+.date-label { font-size: 24rpx; color: #999; width: 48rpx; }
+.date-value { font-size: 24rpx; color: #333; }
+
+.price-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 24rpx; padding-top: 24rpx; border-top: 1rpx solid #f0f0f0;
+}
+
+.price-label { font-size: 26rpx; color: #666; }
+.price-value .currency { font-size: 24rpx; color: #e74c3c; }
+.price-value .amount { font-size: 36rpx; font-weight: 700; color: #e74c3c; }
+
+.guest-form {
+  background: #fff; margin: 0 20rpx; border-radius: 16rpx; padding: 24rpx;
+}
+
+.form-title {
+  font-size: 30rpx; font-weight: 600; color: #1a1a1a; margin-bottom: 24rpx; display: block;
+}
+
+.form-item {
+  display: flex; align-items: center; padding: 16rpx 0; border-bottom: 1rpx solid #f5f5f5;
+}
+
+.form-item:last-child { border-bottom: none; }
+.form-label { font-size: 28rpx; color: #333; width: 120rpx; flex-shrink: 0; }
+.form-input { flex: 1; font-size: 28rpx; color: #333; padding: 8rpx 0; }
+
+.bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20rpx 30rpx; padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -2rpx 20rpx rgba(0,0,0,0.06); z-index: 100;
+}
+
+.total-price { display: flex; align-items: baseline; gap: 8rpx; }
+.total-label { font-size: 26rpx; color: #666; }
+.total-amount { font-size: 40rpx; font-weight: 700; color: #e74c3c; }
+
+.submit-btn {
+  background: linear-gradient(135deg, #27AE60, #2ECC71);
+  color: #fff; padding: 20rpx 48rpx; border-radius: 40rpx;
+  font-size: 28rpx; font-weight: 600;
+}
+
+/* ========== 二维码支付页 ========== */
+.qr-header {
+  text-align: center; padding: 40rpx 20rpx 32rpx;
+}
+
+.qr-title {
+  font-size: 36rpx; font-weight: 700; color: #1a1a1a; display: block; margin-bottom: 8rpx;
+}
+
+.qr-subtitle {
+  font-size: 24rpx; color: #999;
+}
+
+.order-mini-card {
+  background: #fff; margin: 0 20rpx; border-radius: 16rpx; padding: 24rpx 28rpx;
+}
+
+.mini-row {
+  display: flex; justify-content: space-between; align-items: center; padding: 6rpx 0;
+}
+
+.mini-label { font-size: 28rpx; font-weight: 600; color: #333; }
+.mini-amount { font-size: 32rpx; font-weight: 700; color: #e74c3c; }
+.mini-desc { font-size: 24rpx; color: #888; }
+.mini-order { font-size: 22rpx; color: #bbb; font-family: monospace; }
+
+.qr-section {
+  display: flex; justify-content: center; padding: 32rpx 20rpx 24rpx;
+}
+
+.qr-card {
+  background: #fff; border-radius: 20rpx; padding: 32rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.06); text-align: center;
+  width: 100%; max-width: 500rpx;
+}
+
+.qr-code-wrapper {
+  position: relative; width: 360rpx; height: 360rpx; margin: 0 auto 20rpx;
+  border: 3rpx solid #27AE60; border-radius: 16rpx; overflow: hidden;
+  background: #fff;
+}
+
+.qr-image { width: 100%; height: 100%; }
+
+.qr-tap-hint {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(39,174,96,0.85); color: #fff; font-size: 24rpx;
+  text-align: center; padding: 8rpx 0;
+}
+
+.qr-empty {
+  padding: 48rpx 0; text-align: center;
+}
+
+.empty-icon { font-size: 72rpx; margin-bottom: 16rpx; }
+.empty-title { font-size: 30rpx; color: #666; font-weight: 600; display: block; margin-bottom: 8rpx; }
+.empty-desc { font-size: 26rpx; color: #999; display: block; margin-bottom: 4rpx; }
+.empty-tip { font-size: 24rpx; color: #27AE60; display: block; }
+
+.qr-amount {
+  border-top: 1rpx solid #f0f0f0; padding-top: 20rpx;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.qr-amount-label { font-size: 26rpx; color: #888; }
+.qr-amount-value { font-size: 40rpx; font-weight: 700; color: #e74c3c; }
+
+.qr-actions {
+  display: flex; flex-direction: column; align-items: center; gap: 12rpx; padding: 0 20rpx 16rpx;
+}
+
+.qr-action-btn {
+  display: flex; align-items: center; gap: 8rpx;
+  background: linear-gradient(135deg, #27AE60, #2ECC71); color: #fff;
+  padding: 20rpx 48rpx; border-radius: 40rpx; font-size: 28rpx; font-weight: 600;
+  box-shadow: 0 6rpx 20rpx rgba(39,174,96,0.3);
+}
+
+.action-icon { font-size: 32rpx; }
+.action-text { font-size: 28rpx; }
+
+.qr-action-hint { font-size: 22rpx; color: #bbb; }
+
+.pay-steps {
+  background: #fff; margin: 0 20rpx; border-radius: 16rpx; padding: 24rpx;
+}
+
+.steps-title {
+  font-size: 28rpx; font-weight: 600; color: #333; margin-bottom: 20rpx; display: block;
+}
+
+.step-item {
+  display: flex; align-items: flex-start; gap: 16rpx; margin-bottom: 20rpx;
+}
+
+.step-item:last-child { margin-bottom: 0; }
+
+.step-num {
+  width: 40rpx; height: 40rpx; border-radius: 50%;
+  background: #27AE60; color: #fff; font-size: 24rpx; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.step-text { font-size: 26rpx; color: #555; line-height: 1.5; flex: 1; }
+
+.pay-no-qr {
+  background: #fff; margin: 0 20rpx; border-radius: 16rpx; padding: 24rpx;
+  text-align: center;
+}
+
+.no-qr-hint { font-size: 26rpx; color: #888; display: block; margin-bottom: 20rpx; }
+
+.phone-pay-btn {
+  background: #f0f7ff; color: #409eff; padding: 20rpx; border-radius: 12rpx;
+  font-size: 28rpx; text-align: center; border: 1rpx solid #d9ecff;
+}
+
+.confirm-pay-bar {
+  position: fixed; bottom: 30rpx; left: 30rpx; right: 30rpx;
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg, #27AE60, #2ECC71); color: #fff;
+  padding: 26rpx 0; border-radius: 48rpx; text-align: center;
+  font-size: 30rpx; font-weight: 700;
+  box-shadow: 0 6rpx 24rpx rgba(39,174,96,0.35);
+}
+
+/* ========== 支付结果页 ========== */
+.result-card {
+  margin: 60rpx 20rpx; background: #fff; border-radius: 16rpx;
+  padding: 40rpx 30rpx; text-align: center;
+}
+
+.result-icon { font-size: 80rpx; margin-bottom: 20rpx; }
+.result-title { font-size: 36rpx; font-weight: 700; color: #27AE60; display: block; margin-bottom: 12rpx; }
+.result-desc { font-size: 26rpx; color: #999; display: block; margin-bottom: 32rpx; }
+
+.result-detail {
+  background: #f9fafb; border-radius: 12rpx; padding: 24rpx; text-align: left;
+}
+
+.detail-row {
+  display: flex; justify-content: space-between; padding: 12rpx 0; border-bottom: 1rpx solid #f0f0f0;
+}
+
+.detail-row:last-child { border-bottom: none; }
+.detail-row.highlight { margin-top: 4rpx; }
+.detail-label { font-size: 26rpx; color: #888; }
+.detail-value { font-size: 26rpx; color: #333; }
+.detail-value.amount { font-weight: 700; color: #e74c3c; font-size: 30rpx; }
+
+.result-actions {
+  display: flex; gap: 24rpx; margin-top: 32rpx;
+}
+
+.action-btn {
+  flex: 1; padding: 24rpx 0; border-radius: 40rpx; font-size: 28rpx; font-weight: 600; text-align: center;
+}
+
+.back-btn { background: #f0f0f0; color: #666; }
+.home-btn { background: linear-gradient(135deg, #27AE60, #2ECC71); color: #fff; }
+
+/* ========== 后台同步状态 ========== */
+.sync-badge {
+  display: flex; align-items: center; justify-content: center; gap: 8rpx;
+  padding: 16rpx 24rpx; margin: 0 0 24rpx; border-radius: 12rpx;
+  background: #ecfdf5; border: 1rpx solid #a7f3d0;
+  flex-wrap: wrap;
+}
+
+.sync-badge.sync-fail {
+  background: #fff7ed; border-color: #fed7aa;
+}
+
+.sync-icon { font-size: 28rpx; }
+.sync-text { font-size: 24rpx; color: #166534; font-weight: 500; }
+
+.sync-fail .sync-text { color: #c2410c; }
+
+.retry-sync-btn {
+  color: #ea580c; font-size: 22rpx; font-weight: 600;
+  padding: 6rpx 20rpx; border: 1rpx solid #ea580c; border-radius: 20rpx;
+  margin-left: 8rpx;
+}

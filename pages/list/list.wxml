@@ -1,0 +1,50 @@
+<view class="list-container">
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="header-title">{{title}}</text>
+    <view class="header-placeholder"></view>
+  </view>
+
+  <view class="filter-bar">
+    <view 
+      class="filter-item {{currentRegion === region ? 'active' : ''}}" 
+      wx:for="{{regions}}" 
+      wx:key="index"
+      data-region="{{region}}"
+      bindtap="onRegionChange"
+    >
+      <text class="filter-text">{{region}}</text>
+    </view>
+  </view>
+
+  <scroll-view class="scenic-grid" scroll-y="true">
+    <view class="grid-container">
+      <view 
+        class="scenic-card" 
+        wx:for="{{scenicList}}" 
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="goToDetail"
+      >
+        <image class="scenic-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="scenic-info">
+          <text class="scenic-name">{{item.name}}</text>
+          <text class="scenic-location">{{item.location}}</text>
+          <view wx:if="{{item.description}}" class="scenic-desc">
+            <text>{{item.description}}</text>
+          </view>
+          <view wx:if="{{item.duration}}" class="scenic-duration">
+            <text class="duration-icon">⏱</text>
+            <text>{{item.duration}}</text>
+          </view>
+          <view class="scenic-rating">
+            <text class="star">★★★★★</text>
+            <text class="score">{{item.rating}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

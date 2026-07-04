@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tourism.mapper.AdminUserMapper">
+
+    <select id="findByUsername" resultType="com.example.tourism.entity.AdminUser">
+        SELECT * FROM admin_users WHERE username = #{username} AND delete_time IS NULL
+    </select>
+
+    <select id="findById" resultType="com.example.tourism.entity.AdminUser">
+        SELECT * FROM admin_users WHERE id = #{id} AND delete_time IS NULL
+    </select>
+
+    <select id="findAll" resultType="com.example.tourism.entity.AdminUser">
+        SELECT * FROM admin_users WHERE delete_time IS NULL ORDER BY create_time DESC
+    </select>
+
+    <insert id="insert" parameterType="com.example.tourism.entity.AdminUser">
+        INSERT INTO admin_users (username, password, nickname, phone, email, avatar, role, status, create_time, update_time)
+        VALUES (#{username}, #{password}, #{nickname}, #{phone}, #{email}, #{avatar}, #{role}, #{status}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="com.example.tourism.entity.AdminUser">
+        UPDATE admin_users 
+        SET 
+            nickname = #{nickname}, 
+            phone = #{phone}, 
+            email = #{email}, 
+            avatar = #{avatar}, 
+            role = #{role}, 
+            status = #{status}, 
+            update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE admin_users SET password = #{password}, update_time = NOW() WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+        UPDATE admin_users SET delete_time = NOW() WHERE id = #{id}
+    </update>
+
+    <update id="updateLastLogin">
+        UPDATE admin_users SET last_login_ip = #{ip}, last_login_time = #{time} WHERE id = #{id}
+    </update>
+</mapper>

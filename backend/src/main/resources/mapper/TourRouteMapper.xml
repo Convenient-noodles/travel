@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tourism.mapper.TourRouteMapper">
+
+    <select id="findByConditions" resultType="com.example.tourism.entity.TourRoute">
+        SELECT * FROM tour_routes 
+        WHERE delete_time IS NULL
+        <if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>
+        <if test="region != null and region != ''">AND region = #{region}</if>
+        <if test="days != null">AND days = #{days}</if>
+        ORDER BY sort_order DESC, create_time DESC
+        LIMIT #{offset}, #{pageSize} <!--【改】接口参数为offset-->
+    </select>
+
+    <select id="countByConditions" resultType="Long">
+        SELECT COUNT(*) FROM tour_routes 
+        WHERE delete_time IS NULL
+        <if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>
+        <if test="region != null and region != ''">AND region = #{region}</if>
+        <if test="days != null">AND days = #{days}</if>
+    </select>
+
+    <select id="findById" resultType="com.example.tourism.entity.TourRoute">
+        SELECT * FROM tour_routes WHERE id = #{id} AND delete_time IS NULL
+    </select>
+
+    <insert id="insert" parameterType="com.example.tourism.entity.TourRoute" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tour_routes 
+        (name, cover_image, images, tag, region, days, nights, price, description, 
+        highlights, includes, itinerary, suitable_for, best_season, notes, 
+        is_recommended, is_hot, sort_order, status, create_time, update_time)
+        VALUES 
+        (#{name}, #{coverImage}, #{images}, #{tag}, #{region}, #{days}, #{nights}, 
+        #{price}, #{description}, #{highlights}, #{includes}, #{itinerary}, 
+        #{suitableFor}, #{bestSeason}, #{notes}, #{isRecommended}, #{isHot}, 
+        #{sortOrder}, #{status}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="com.example.tourism.entity.TourRoute">
+        UPDATE tour_routes SET
+            name = #{name}, cover_image = #{coverImage}, images = #{images}, tag = #{tag},
+            region = #{region}, days = #{days}, nights = #{nights}, price = #{price},
+            description = #{description}, highlights = #{highlights}, includes = #{includes},
+            itinerary = #{itinerary}, suitable_for = #{suitableFor}, best_season = #{bestSeason},
+            notes = #{notes}, is_recommended = #{isRecommended}, is_hot = #{isHot},
+            sort_order = #{sortOrder}, status = #{status}, update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM tour_routes WHERE id = #{id}
+    </delete>
+</mapper>

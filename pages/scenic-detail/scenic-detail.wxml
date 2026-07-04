@@ -1,0 +1,121 @@
+<view class="detail-container" wx:if="{{!isLoading && scenic}}">
+  <view class="header" style="padding-top: {{safeAreaTop}}rpx;">
+    <view class="back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+  </view>
+
+  <view class="image-carousel" wx:if="{{scenic.images && scenic.images.length > 1}}">
+    <view class="carousel-container">
+      <image 
+        class="carousel-image" 
+        src="{{scenic.images[currentImageIndex]}}" 
+        mode="aspectFill"
+        bindtap="onImageTap"
+        data-src="{{scenic.images[currentImageIndex]}}"
+      ></image>
+      
+      <view class="prev-btn" bindtap="onPrevImage">
+        <text class="arrow">‹</text>
+      </view>
+      
+      <view class="next-btn" bindtap="onNextImage">
+        <text class="arrow">›</text>
+      </view>
+      
+      <view class="carousel-indicator">
+        <text class="indicator-text">{{currentImageIndex + 1}}/{{scenic.images.length}}</text>
+        <view class="indicator-dots">
+          <view 
+            class="dot {{index === currentImageIndex ? 'active' : ''}}" 
+            wx:for="{{scenic.images}}" 
+            wx:key="index"
+            data-index="{{index}}"
+            bindtap="onDotTap"
+          ></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="single-image" wx:else>
+    <image 
+      class="single-img" 
+      src="{{scenic.image}}" 
+      mode="aspectFill"
+      bindtap="onImageTap"
+      data-src="{{scenic.image}}"
+    ></image>
+  </view>
+
+  <view class="image-overlay">
+    <text class="scenic-name">{{scenic.name}}</text>
+  </view>
+
+  <view class="info-section">
+    <view class="info-row">
+      <view class="location-box" bindtap="onNavigate">
+        <text class="location-icon">📍</text>
+        <text class="location-text">{{scenic.location}}</text>
+        <text class="navigate-hint">点击导航</text>
+      </view>
+      <view class="rating-box">
+        <text class="star">★</text>
+        <text class="rating-value">{{scenic.rating}}</text>
+      </view>
+    </view>
+
+    <view class="collect-btn {{isCollected ? 'collected' : ''}}" bindtap="onCollect">
+      <text class="collect-icon">{{isCollected ? '❤️' : '🤍'}}</text>
+      <text class="collect-text">{{isCollected ? '已收藏' : '收藏'}}</text>
+    </view>
+  </view>
+
+  <scroll-view class="content" scroll-y="true">
+    <view class="section">
+      <view class="section-header">
+        <text class="section-icon">🏞️</text>
+        <text class="section-title">景区介绍</text>
+      </view>
+      <view class="description">
+        <text class="desc-text">{{scenic.description}}</text>
+      </view>
+      <view class="features">
+        <view class="feature-tag" wx:for="{{scenic.features}}" wx:key="index">
+          <text class="tag-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-header">
+        <text class="section-icon">🚌</text>
+        <text class="section-title">交通指南</text>
+      </view>
+      <view class="tips-box">
+        <text class="tips-text">{{scenic.transport}}</text>
+      </view>
+      <view class="nav-btn-box">
+        <view class="nav-btn" bindtap="onNavigate">
+          <text class="nav-btn-icon">🗺️</text>
+          <text class="nav-btn-text">开始导航</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-header">
+        <text class="section-icon">💡</text>
+        <text class="section-title">游玩建议</text>
+      </view>
+      <view class="tips-box tips-orange">
+        <text class="tips-text">{{scenic.tips}}</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<view class="loading-container" wx:if="{{isLoading}}">
+  <view class="loading-spinner"></view>
+  <text class="loading-text">加载中...</text>
+</view>

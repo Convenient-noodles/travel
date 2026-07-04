@@ -1,0 +1,160 @@
+<view class="route-container" wx:if="{{!isLoading && route}}">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar" style="padding-top: {{safeAreaTop}}rpx;">
+    <view class="nav-back" bindtap="onBack">
+      <text class="nav-back-icon">←</text>
+    </view>
+    <text class="nav-title">{{route.name}}</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <!-- 封面头图 -->
+  <view class="hero-section">
+    <image class="hero-image" src="{{route.coverImage}}" mode="aspectFill" />
+    <view class="hero-overlay">
+      <text class="hero-name">{{route.name}}</text>
+      <view class="hero-tags">
+        <text class="hero-tag">{{route.region}}</text>
+        <text class="hero-tag">{{route.days}}天{{route.nights}}晚</text>
+        <text class="hero-tag" wx:if="{{route.price}}">¥{{route.price}}起</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 主体内容区 -->
+  <scroll-view class="main-scroll" scroll-y="true" enhanced="true" show-scrollbar="{{false}}">
+    <!-- 行程天数选择器 -->
+    <view class="day-selector-card">
+      <view class="day-selector-header">
+        <text class="day-selector-icon">📅</text>
+        <text class="day-selector-title">行程概览</text>
+        <text class="day-selector-sub">{{route.days}}天{{route.nights}}晚 · {{route.bestSeason || '全年可游'}}</text>
+      </view>
+      <scroll-view class="day-tabs" scroll-x="true" enhanced="true" show-scrollbar="{{false}}">
+        <view class="day-tab {{item.day === activeDay ? 'active' : ''}}" 
+              wx:for="{{itineraryDays}}" wx:key="day"
+              data-day="{{item.day}}" bindtap="onDayTap">
+          <text class="day-tab-num">D{{item.day}}</text>
+          <text class="day-tab-title">{{item.title}}</text>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 当日行程详情 -->
+    <view class="day-detail-card" wx:for="{{itineraryDays}}" wx:key="day" wx:if="{{item.day === activeDay}}">
+      <!-- 日期标题 -->
+      <view class="day-header">
+        <view class="day-header-left">
+          <view class="day-badge">
+            <text class="day-badge-text">第{{item.day}}天</text>
+          </view>
+          <text class="day-header-title">{{item.title}}</text>
+        </view>
+        <view class="day-header-line"></view>
+      </view>
+
+      <!-- 景点列表（纵向时间轴） -->
+      <view class="spots-timeline">
+        <view class="spot-item" wx:for="{{item.spots}}" wx:key="name" wx:for-item="spot">
+          <!-- 时间轴节点 -->
+          <view class="timeline-line">
+            <view class="timeline-dot"></view>
+            <view class="timeline-connector" wx:if="{{index < item.spots.length - 1}}"></view>
+          </view>
+
+          <!-- 景点内容卡片 -->
+          <view class="spot-card">
+            <!-- 车程信息 -->
+            <view class="travel-info" wx:if="{{spot.travelFrom}}">
+              <text class="travel-icon">🚗</text>
+              <text class="travel-text">{{spot.travelFrom}}</text>
+            </view>
+
+            <!-- 景点配图 -->
+            <view class="spot-image-wrapper">
+              <image class="spot-image" src="{{spot.image}}" mode="aspectFill"
+                     data-src="{{spot.image}}" bindtap="onSpotImageTap" />
+              <view class="spot-order" wx:if="{{item.spots.length > 1}}">
+                <text class="spot-order-text">{{index + 1}}</text>
+              </view>
+            </view>
+
+            <!-- 景点信息 -->
+            <view class="spot-info">
+              <view class="spot-name-row">
+                <text class="spot-name">{{spot.name}}</text>
+                <view class="spot-duration">
+                  <text class="duration-text">⏱ {{spot.duration}}</text>
+                </view>
+              </view>
+              <text class="spot-desc">{{spot.description}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 餐饮住宿 -->
+      <view class="day-extras">
+        <view class="extra-item" wx:if="{{item.meals}}">
+          <text class="extra-icon">🍽️</text>
+          <text class="extra-text">{{item.meals}}</text>
+        </view>
+        <view class="extra-item" wx:if="{{item.hotel}}">
+          <text class="extra-icon">🏨</text>
+          <text class="extra-text">{{item.hotel}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 路线亮点 -->
+    <view class="info-card" wx:if="{{route.highlights.length}}">
+      <view class="info-card-header">
+        <text class="info-card-icon">✨</text>
+        <text class="info-card-title">路线亮点</text>
+      </view>
+      <view class="highlight-list">
+        <view class="highlight-item" wx:for="{{route.highlights}}" wx:key="index">
+          <text class="highlight-dot">•</text>
+          <text class="highlight-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 费用包含 -->
+    <view class="info-card" wx:if="{{route.includes.length}}">
+      <view class="info-card-header">
+        <text class="info-card-icon">💰</text>
+        <text class="info-card-title">费用包含</text>
+      </view>
+      <view class="include-grid">
+        <view class="include-item" wx:for="{{route.includes}}" wx:key="index">
+          <text class="include-check">✓</text>
+          <text class="include-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 温馨提示 -->
+    <view class="info-card last-card" wx:if="{{route.notes.length}}">
+      <view class="info-card-header">
+        <text class="info-card-icon">📝</text>
+        <text class="info-card-title">温馨提示</text>
+      </view>
+      <view class="tips-list">
+        <view class="tips-item" wx:for="{{route.notes}}" wx:key="index">
+          <text class="tips-num">{{index + 1}}.</text>
+          <text class="tips-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-spacer"></view>
+  </scroll-view>
+</view>
+
+<!-- 加载态 -->
+<view class="loading-container" wx:if="{{isLoading}}">
+  <view class="loading-spinner"></view>
+  <text class="loading-text">加载中...</text>
+</view>

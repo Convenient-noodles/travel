@@ -1,0 +1,51 @@
+<view class="login-container">
+  <image class="bg-image" src="../../images/a6.jpg" mode="aspectFill"></image>
+  
+  <view class="login-content">
+    <view class="logo-section">
+      <view class="logo-icon">
+        <text class="logo-text">黔</text>
+      </view>
+      <text class="app-title">带你黔游</text>
+    </view>
+    
+    <text class="login-tip">请使用微信登录，获取你的专属旅游攻略</text>
+
+    <!-- 头像昵称填写区域 -->
+    <view class="profile-form" wx:if="{{!showUserModal}}">
+      <view class="form-item">
+        <text class="form-label">头像</text>
+        <button class="avatar-choose-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar" disabled="{{isChoosingAvatar}}">
+          <image class="avatar-preview" src="{{avatarUrl || defaultAvatarUrl}}" mode="aspectFill"></image>
+          <text class="avatar-choose-text">{{avatarUrl ? '更换头像' : '选择头像'}}</text>
+        </button>
+      </view>
+      <view class="form-item">
+        <text class="form-label">昵称</text>
+        <input 
+          class="nickname-input" 
+          type="nickname" 
+          placeholder="请输入昵称" 
+          value="{{nickName}}"
+          bindinput="onNicknameInput"
+          bindblur="onNicknameBlur"
+        />
+      </view>
+    </view>
+    
+    <button 
+      class="login-btn" 
+      bindtap="handleLogin" 
+      loading="{{isLoading}}"
+      disabled="{{isLoading}}"
+    >
+      <text class="login-btn-text">微信一键登录</text>
+    </button>
+    
+    <view class="privacy-section">
+      <text class="privacy-text">登录即表示同意</text>
+      <text class="privacy-link">《用户协议》</text>
+      <text class="privacy-text">《隐私政策》</text>
+    </view>
+  </view>
+</view>

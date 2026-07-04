@@ -1,0 +1,90 @@
+<view class="food-container">
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="header-title">
+      <text class="title-text">贵州美食</text>
+    </view>
+    <view class="header-placeholder"></view>
+  </view>
+
+  <view class="category-section">
+    <scroll-view class="category-scroll" scroll-x="true" scroll-into-view="category-{{currentCategory}}" enable-flex>
+      <view class="category-list">
+        <view
+          wx:for="{{categories}}"
+          wx:key="type"
+          id="category-{{item.type}}"
+          class="category-item {{currentCategory === item.type ? 'active' : ''}}"
+          data-type="{{item.type}}"
+          bindtap="onCategoryChange"
+        >
+          <text class="category-name">{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <scroll-view
+    class="content-scroll"
+    scroll-y="true"
+    bindscrolltolower="onReachBottom"
+    bindscroll="onScroll"
+    enhanced
+    show-scrollbar="false"
+  >
+    <view class="loading-container" wx:if="{{loading && foodList.length === 0}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <view class="empty-container" wx:if="{{!loading && foodList.length === 0}}">
+      <text class="empty-icon">🍽️</text>
+      <text class="empty-text">暂无美食数据</text>
+      <text class="empty-hint">请尝试切换其他分类</text>
+    </view>
+
+    <view class="food-grid" wx:if="foodList.length > 0">
+      <view
+        wx:for="{{foodList}}"
+        wx:key="id"
+        class="food-card"
+        data-id="{{item.id}}"
+        bindtap="onFoodTap"
+        bindlongpress="onFoodLongPress"
+      >
+        <view class="food-image-wrapper">
+          <image
+            class="food-image"
+            src="{{item.image}}"
+            mode="aspectFill"
+            lazy-load="{{true}}"
+            binderror="onImageError"
+            data-index="{{index}}"
+          ></image>
+          <view class="food-tag" wx:if="{{item.tag}}">{{item.tag}}</view>
+        </view>
+        <view class="food-info">
+          <text class="food-name">{{item.name}}</text>
+          <text class="food-desc">{{item.description}}</text>
+          <text class="food-region">📍 {{item.region}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="load-more-container" wx:if="foodList.length > 0">
+      <view class="load-more-loading" wx:if="loadingMore">
+        <view class="loading-dots">
+          <view class="dot"></view>
+          <view class="dot"></view>
+          <view class="dot"></view>
+        </view>
+        <text class="loading-text">加载更多...</text>
+      </view>
+      <text class="load-more-end" wx:else-if="!hasMore">已显示全部内容</text>
+    </view>
+
+    <view class="bottom-spacing"></view>
+  </scroll-view>
+</view>

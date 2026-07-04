@@ -1,0 +1,82 @@
+<view class="nav-container">
+  <view class="nav-header">
+    <view class="nav-back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">{{isNavigating ? '正在导航' : '导航'}}</text>
+    <view class="nav-close-btn" bindtap="onClose">
+      <text class="close-icon">✕</text>
+    </view>
+  </view>
+
+  <view class="map-wrapper">
+    <map
+      id="navMap"
+      class="nav-map"
+      type="gcj02"
+      latitude="{{isNavigating && userLocation ? userLocation.latitude : latitude}}"
+      longitude="{{isNavigating && userLocation ? userLocation.longitude : longitude}}"
+      scale="{{isNavigating ? 16 : 15}}"
+      markers="{{markers}}"
+      polyline="{{polyline}}"
+      include-points="{{includePoints}}"
+      show-location="{{true}}"
+      enable-zoom="{{true}}"
+      enable-scroll="{{true}}"
+      bindload="onMapLoad"
+    ></map>
+
+    <!-- 默认状态：位置信息浮层 -->
+    <view class="location-info" wx:if="{{locationInfo && !isNavigating}}">
+      <text class="location-name">{{locationInfo.name}}</text>
+      <text class="location-address">{{locationInfo.address}}</text>
+    </view>
+
+    <!-- 默认状态：底部操作面板（图一） -->
+    <view class="nav-action-panel" wx:if="{{!isNavigating}}">
+      <view class="nav-modes">
+        <view class="nav-mode {{navMode === 'driving' ? 'active' : ''}}" data-mode="driving" bindtap="onNavModeChange">
+          <text class="mode-icon">🚗</text>
+          <text class="mode-text">驾车</text>
+        </view>
+        <view class="nav-mode {{navMode === 'walking' ? 'active' : ''}}" data-mode="walking" bindtap="onNavModeChange">
+          <text class="mode-icon">🚶</text>
+          <text class="mode-text">步行</text>
+        </view>
+        <view class="nav-mode {{navMode === 'transit' ? 'active' : ''}}" data-mode="transit" bindtap="onNavModeChange">
+          <text class="mode-icon">🚌</text>
+          <text class="mode-text">公交</text>
+        </view>
+      </view>
+      <view class="distance-info" wx:if="{{distanceInfo}}">
+        <text class="distance-text">{{distanceInfo}}</text>
+      </view>
+      <view class="nav-btn-group">
+        <view class="nav-start-btn" bindtap="onStartNavigation">
+          <text class="start-icon">▶</text>
+          <text class="start-text">开始导航</text>
+        </view>
+        <view class="nav-exit-btn" bindtap="onExitNavigation">
+          <text class="exit-text">退出导航</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 导航中状态面板：紧凑底部条 -->
+    <view class="navigating-panel" wx:if="{{isNavigating}}">
+      <view class="navigating-badge">
+        <view class="navigating-pulse"></view>
+        <text class="navigating-badge-text">导航中</text>
+      </view>
+      <view class="navigating-info">
+        <text class="navigating-to-label">前往</text>
+        <text class="navigating-to-name">{{name}}</text>
+        <text class="navigating-stats" wx:if="{{distanceInfo}}">{{distanceInfo}}</text>
+      </view>
+      <view class="navigating-end-btn" bindtap="onExitNavigation">
+        <text class="navigating-end-icon">✕</text>
+        <text class="navigating-end-text">结束</text>
+      </view>
+    </view>
+  </view>
+</view>

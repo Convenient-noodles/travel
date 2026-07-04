@@ -1,0 +1,97 @@
+<view class="my-container">
+  <view class="user-section">
+    <block wx:if="{{!isLogin}}">
+      <view class="avatar-wrapper">
+        <button class="avatar-choose-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar" src="{{avatarUrl || '/images/a6.jpg'}}" mode="aspectFill" binderror="onAvatarError"></image>
+          <view class="avatar-tip">
+            <text>选择头像</text>
+          </view>
+        </button>
+      </view>
+      <view class="nickname-input-wrapper">
+        <input 
+          class="nickname-input" 
+          type="nickname" 
+          placeholder="请输入昵称" 
+          value="{{nickName}}"
+          bindinput="onNicknameInput"
+          bindblur="onNicknameBlur"
+        />
+      </view>
+      <text class="login-hint">选择头像并输入昵称后自动登录</text>
+    </block>
+
+    <block wx:else>
+      <view class="avatar-wrapper">
+        <button class="avatar-choose-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar" src="{{userInfo.avatarUrl || '/images/a6.jpg'}}" mode="aspectFill" binderror="onAvatarError"></image>
+          <view class="avatar-edit-tip">
+            <text>换头像</text>
+          </view>
+        </button>
+      </view>
+      <view class="nickname-display-wrapper">
+        <input 
+          class="nickname-input logged-in" 
+          type="nickname" 
+          value="{{userInfo.nickName}}"
+          placeholder="修改昵称"
+          bindblur="onEditNicknameBlur"
+        />
+      </view>
+    </block>
+  </view>
+
+  <view class="menu-list">
+    <view class="menu-item" bindtap="goToOrders">
+      <text class="menu-icon">📋</text>
+      <text class="menu-name">我的订单</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goToBookings">
+      <text class="menu-icon">🎭</text>
+      <text class="menu-name">我的预约</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goToCollection">
+      <text class="menu-icon">❤️</text>
+      <text class="menu-name">我的收藏</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goToHistory">
+      <text class="menu-icon">👁️</text>
+      <text class="menu-name">浏览历史</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goToFeedback">
+      <text class="menu-icon">💬</text>
+      <text class="menu-name">意见反馈</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goToAbout">
+      <text class="menu-icon">ℹ️</text>
+      <text class="menu-name">关于我们</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="logout-btn" wx:if="{{isLogin}}" bindtap="handleLogout">
+    <text>退出登录</text>
+  </view>
+
+  <view class="tab-bar">
+    <view class="tab-item" bindtap="goToHome">
+      <text class="tab-icon">🏠</text>
+      <text class="tab-text">首页</text>
+    </view>
+    <view class="tab-item" bindtap="goToDiscover">
+      <text class="tab-icon">🌍</text>
+      <text class="tab-text">发现</text>
+    </view>
+    <view class="tab-item active">
+      <text class="tab-icon">👤</text>
+      <text class="tab-text">我的</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,112 @@
+<view class="search-container">
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索景点/美食/攻略"
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+        focus="{{searchFocus}}"
+        confirm-type="search"
+        placeholder-class="placeholder-style"
+      />
+      <view class="clear-btn" wx:if="{{searchKeyword}}" bindtap="onClearKeyword">
+        <text class="clear-icon">✕</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y="true" wx:if="{{!hasSearched}}">
+    <view class="popular-section" wx:if="{{popularList.length > 0}}">
+      <view class="section-header">
+        <text class="section-title">热门搜索</text>
+      </view>
+      <view class="popular-tags">
+        <view
+          class="tag-item"
+          wx:for="{{popularList}}"
+          wx:key="index"
+          data-keyword="{{item}}"
+          bindtap="onPopularTap"
+        >
+          <text class="tag-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="history-section" wx:if="{{historyList.length > 0}}">
+      <view class="section-header">
+        <text class="section-title">搜索历史</text>
+        <view class="clear-history" bindtap="onClearHistory">
+          <text class="clear-history-text">清除</text>
+        </view>
+      </view>
+      <view class="history-list">
+        <view
+          class="history-item"
+          wx:for="{{historyList}}"
+          wx:key="index"
+          data-keyword="{{item}}"
+          bindtap="onHistoryTap"
+        >
+          <text class="history-icon">🕐</text>
+          <text class="history-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="search-results" wx:if="{{hasSearched}}">
+    <view class="category-tabs">
+      <view
+        class="tab-item {{currentCategory === item.type ? 'active' : ''}}"
+        wx:for="{{categories}}"
+        wx:key="index"
+        data-type="{{item.type}}"
+        bindtap="onCategoryChange"
+      >
+        <text class="tab-text">{{item.name}}</text>
+        <view class="tab-indicator" wx:if="{{currentCategory === item.type}}"></view>
+      </view>
+    </view>
+
+    <scroll-view class="results-scroll" scroll-y="true">
+      <view class="loading-container" wx:if="{{loading}}">
+        <view class="loading-spinner"></view>
+        <text class="loading-text">搜索中...</text>
+      </view>
+
+      <view class="empty-container" wx:elif="{{resultList.length === 0}}">
+        <view class="empty-icon">🔍</view>
+        <text class="empty-text">未找到相关结果</text>
+        <text class="empty-hint">换个关键词试试吧</text>
+      </view>
+
+      <view class="results-list" wx:else>
+        <view
+          class="result-item"
+          wx:for="{{resultList}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          data-type="{{item.type}}"
+          bindtap="onResultTap"
+        >
+          <image class="result-image" src="{{item.image}}" mode="aspectFill" lazy-load="{{true}}"></image>
+          <view class="result-content">
+            <text class="result-title">{{item.title}}</text>
+            <text class="result-desc">{{item.description}}</text>
+            <view class="result-meta">
+              <text class="result-location" wx:if="{{item.location}}">📍 {{item.location}}</text>
+              <text class="result-tag" wx:if="{{item.tag}}">{{item.tag}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

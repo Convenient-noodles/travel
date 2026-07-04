@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tourism.mapper.OperationLogMapper">
+
+    <select id="findByConditions" resultType="com.example.tourism.entity.OperationLog">
+        SELECT * FROM operation_logs
+        WHERE 1=1
+        <if test="userId != null">AND admin_user_id = #{userId}</if>
+        <if test="module != null and module != ''">AND module = #{module}</if>
+        <if test="startTime != null">AND create_time &gt;= #{startTime}</if>
+        <if test="endTime != null">AND create_time &lt;= #{endTime}</if>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countByConditions" resultType="Long">
+        SELECT COUNT(*) FROM operation_logs
+        WHERE 1=1
+        <if test="userId != null">AND admin_user_id = #{userId}</if>
+        <if test="module != null and module != ''">AND module = #{module}</if>
+        <if test="startTime != null">AND create_time &gt;= #{startTime}</if>
+        <if test="endTime != null">AND create_time &lt;= #{endTime}</if>
+    </select>
+
+    <insert id="insert" parameterType="com.example.tourism.entity.OperationLog">
+        INSERT INTO operation_logs 
+        (admin_user_id, username, module, action, content, ip, user_agent, create_time)
+        VALUES 
+        (#{adminUserId}, #{username}, #{module}, #{action}, #{content}, #{ip}, #{userAgent}, #{createTime})
+    </insert>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tourism.mapper.ScenicSpotMapper">
+
+    <select id="findByConditions" resultType="com.example.tourism.entity.ScenicSpot">
+        SELECT * FROM scenic_spots 
+        WHERE delete_time IS NULL
+        <if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>
+        <if test="region != null and region != ''">AND region = #{region}</if>
+        ORDER BY sort_order DESC, create_time DESC
+        LIMIT #{page}, #{pageSize}
+    </select>
+
+    <select id="countByConditions" resultType="Long">
+        SELECT COUNT(*) FROM scenic_spots 
+        WHERE delete_time IS NULL
+        <if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>
+        <if test="region != null and region != ''">AND region = #{region}</if>
+    </select>
+
+    <select id="findById" resultType="com.example.tourism.entity.ScenicSpot">
+        SELECT * FROM scenic_spots WHERE id = #{id} AND delete_time IS NULL
+    </select>
+
+    <insert id="insert" parameterType="com.example.tourism.entity.ScenicSpot" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO scenic_spots
+        (name, cover_image, images, region, address, latitude, longitude, description, highlights,
+        ticket_info, open_time, traffic_info, tips, tags, rating, visit_count, like_count,
+        is_hot, is_recommended, sort_order, status, create_time, update_time, notice, notice_time)
+        VALUES
+        (#{name}, #{coverImage}, #{images}, #{region}, #{address}, #{latitude}, #{longitude},
+        #{description}, #{highlights}, #{ticketInfo}, #{openTime}, #{trafficInfo}, #{tips},
+        #{tags}, #{rating}, #{visitCount}, #{likeCount}, #{isHot}, #{isRecommended},
+        #{sortOrder}, #{status}, #{createTime}, #{updateTime}, #{notice}, #{noticeTime})
+    </insert>
+
+    <update id="update" parameterType="com.example.tourism.entity.ScenicSpot">
+        UPDATE scenic_spots SET
+            name = #{name}, cover_image = #{coverImage}, images = #{images}, region = #{region},
+            address = #{address}, latitude = #{latitude}, longitude = #{longitude},
+            description = #{description}, highlights = #{highlights}, ticket_info = #{ticketInfo},
+            open_time = #{openTime}, traffic_info = #{trafficInfo}, tips = #{tips},
+            tags = #{tags}, rating = #{rating}, is_hot = #{isHot}, is_recommended = #{isRecommended},
+            sort_order = #{sortOrder}, status = #{status}, update_time = #{updateTime},
+            notice = #{notice}, notice_time = #{noticeTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM scenic_spots WHERE id = #{id}
+    </delete>
+
+    <update id="updateRecommend">
+        UPDATE scenic_spots SET is_recommended = #{isRecommended}, update_time = NOW() WHERE id = #{id}
+    </update>
+
+    <update id="updateVisitCount">
+        UPDATE scenic_spots SET visit_count = visit_count + 1 WHERE id = #{id}
+    </update>
+
+    <select id="findHotScenics" resultType="com.example.tourism.entity.ScenicSpot">
+        SELECT * FROM scenic_spots 
+        WHERE delete_time IS NULL AND status = 1 AND is_hot = 1 <!--【改】添加is_hot条件-->
+        ORDER BY rating DESC, visit_count DESC
+        LIMIT 10
+    </select>
+</mapper>

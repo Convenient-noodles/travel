@@ -1,0 +1,71 @@
+<view class="red-detail-container">
+  <view class="nav-bar" style="height: {{navBarHeight}}rpx; padding-top: {{safeAreaTop}}rpx;">
+    <view class="nav-back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">红色旅游</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <scroll-view class="content-area" scroll-y style="margin-top: {{contentTop}}rpx;">
+    <view class="detail-content" wx:if="{{redData}}">
+      <view class="header-image-wrapper">
+        <image class="header-image" src="{{redData.image}}" mode="aspectFill"></image>
+        <view class="header-overlay">
+          <text class="header-title">{{redData.name}}</text>
+          <view class="header-rating">
+            <text class="star">★★★★★</text>
+            <text class="score">{{redData.rating}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="info-section">
+        <view class="info-row">
+          <text class="info-icon">📍</text>
+          <text class="info-text">{{redData.location}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-icon">🏛️</text>
+          <text class="info-text">类型：{{redData.type}}</text>
+        </view>
+      </view>
+
+      <view class="section">
+        <text class="section-title">景点介绍</text>
+        <text class="section-content">{{redData.description}}</text>
+      </view>
+
+      <view class="section">
+        <text class="section-title">历史背景</text>
+        <text class="section-content">{{redData.background}}</text>
+      </view>
+
+      <view class="section">
+        <text class="section-title">主要景点</text>
+        <view class="feature-list">
+          <view class="feature-item" wx:for="{{redData.features}}" wx:key="index">
+            <text class="feature-icon">📍</text>
+            <text class="feature-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <text class="section-title">旅游贴士</text>
+        <view class="tips-list">
+          <view class="tips-item" wx:for="{{redData.tips}}" wx:key="index">
+            <text class="tips-icon">✓</text>
+            <text class="tips-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="action-section">
+        <button class="nav-btn" bindtap="onNav">导航前往</button>
+      </view>
+
+      <view class="bottom-space"></view>
+    </view>
+  </scroll-view>
+</view>

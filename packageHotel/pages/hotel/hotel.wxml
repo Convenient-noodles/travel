@@ -1,0 +1,116 @@
+<view class="hotel-container">
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="header-title">住宿推荐</text>
+    <view class="header-placeholder"></view>
+  </view>
+
+  <view class="filter-section">
+    <view class="filter-row">
+      <text class="filter-label">类型：</text>
+      <scroll-view class="filter-scroll" scroll-x="true" show-scrollbar="false">
+        <view class="filter-options">
+          <view
+            wx:for="{{types}}"
+            wx:key="value"
+            class="filter-option {{currentType === item.value ? 'active' : ''}}"
+            data-type="{{item.value}}"
+            bindtap="onTypeChange"
+          >
+            <text>{{item.name}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="filter-row">
+      <text class="filter-label">价格：</text>
+      <scroll-view class="filter-scroll" scroll-x="true" show-scrollbar="false">
+        <view class="filter-options">
+          <view
+            wx:for="{{priceRanges}}"
+            wx:key="value"
+            class="filter-option {{currentPrice === item.value ? 'active' : ''}}"
+            data-price="{{item.value}}"
+            bindtap="onPriceChange"
+          >
+            <text>{{item.name}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <scroll-view
+    class="content-scroll"
+    scroll-y="true"
+    bindscrolltolower="onReachBottom"
+    refresher-enabled="true"
+    refresher-triggered="{{loading}}"
+    bindrefresherrefresh="onPullDownRefresh"
+  >
+    <view class="loading-container" wx:if="{{loading && hotelList.length === 0}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <view class="empty-container" wx:if="{{!loading && hotelList.length === 0}}">
+      <text class="empty-icon">🏨</text>
+      <text class="empty-text">暂无符合条件的住宿</text>
+      <text class="empty-hint">请尝试调整筛选条件</text>
+    </view>
+
+    <view class="hotel-list" wx:if="{{hotelList.length > 0}}">
+      <view
+        class="hotel-card"
+        wx:for="{{hotelList}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onHotelTap"
+      >
+        <view class="hotel-image-wrapper">
+          <image
+            class="hotel-image"
+            src="{{item.image}}"
+            mode="aspectFill"
+            lazy-load="true"
+            binderror="onImageError"
+            data-index="{{index}}"
+          ></image>
+          <view class="hotel-type-tag">{{item.type === 'hotel' ? '酒店' : (item.type === 'homestay' ? '民宿' : '吊脚楼')}}</view>
+        </view>
+        <view class="hotel-info">
+          <text class="hotel-name">{{item.name}}</text>
+          <view class="hotel-meta">
+            <view class="hotel-rating">
+              <text class="rating-star">⭐</text>
+              <text class="rating-value">{{item.rating}}</text>
+              <text class="rating-count">({{item.reviews}}条评价)</text>
+            </view>
+          </view>
+          <text class="hotel-distance">{{item.distance}}</text>
+          <view class="hotel-price-row">
+            <text class="hotel-price">¥{{item.price}}</text>
+            <text class="price-unit">/晚</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="load-more-container" wx:if="{{hotelList.length > 0}}">
+      <view class="load-more-loading" wx:if="{{loadingMore}}">
+        <view class="loading-dots">
+          <view class="dot"></view>
+          <view class="dot"></view>
+          <view class="dot"></view>
+        </view>
+        <text class="load-more-text">加载中...</text>
+      </view>
+      <view class="load-more-end" wx:elif="{{!hasMore}}">
+        <text>已显示全部住宿</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

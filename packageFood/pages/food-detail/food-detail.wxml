@@ -1,0 +1,154 @@
+<view class="food-detail-container">
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="header-actions">
+      <view class="collect-btn" bindtap="onCollect" data-collected="{{isCollected}}">
+        <text class="collect-icon">{{isCollected ? '❤️' : '🤍'}}</text>
+      </view>
+      <view class="share-btn" bindtap="onShare">
+        <text class="share-icon">↗</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y="true">
+    <view class="loading-container" wx:if="{{loading}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <view class="detail-content" wx:else>
+      <view class="image-section">
+        <image
+          class="food-image"
+          src="{{food.image}}"
+          mode="aspectFill"
+          bindtap="onImageTap"
+          lazy-load="true"
+        ></image>
+        <view class="image-overlay">
+          <view class="tag-list">
+            <text class="tag-item" wx:if="{{food.tag}}">{{food.tag}}</text>
+            <text class="tag-item price-tag">💰 {{food.price}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="info-section">
+        <text class="food-name">{{food.name}}</text>
+        <text class="food-region">📍 {{food.region}}</text>
+      </view>
+
+      <view class="divider"></view>
+
+      <view class="section" wx:if="{{food.images && food.images.length > 0}}">
+        <view class="section-header">
+          <text class="section-icon">🖼️</text>
+          <text class="section-title">图片集</text>
+        </view>
+        <scroll-view class="images-scroll" scroll-x="true">
+          <view class="images-list">
+            <image
+              wx:for="{{food.images}}"
+              wx:key="index"
+              class="gallery-image"
+              src="{{item}}"
+              mode="aspectFill"
+              bindtap="onGalleryImageTap"
+              data-index="{{index}}"
+              lazy-load="true"
+            ></image>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="divider"></view>
+
+      <view class="section">
+        <view class="section-header">
+          <text class="section-icon">👅</text>
+          <text class="section-title">口味特点</text>
+        </view>
+        <text class="section-content">{{food.flavor || '暂无详细信息'}}</text>
+      </view>
+
+      <view class="divider"></view>
+
+      <view class="section">
+        <view class="section-header">
+          <text class="section-icon">📜</text>
+          <text class="section-title">历史渊源</text>
+        </view>
+        <text class="section-content">{{food.history || '暂无详细信息'}}</text>
+      </view>
+
+      <view class="divider"></view>
+
+      <view class="section">
+        <view class="section-header">
+          <text class="section-icon">✨</text>
+          <text class="section-title">特色亮点</text>
+        </view>
+        <text class="section-content">{{food.highlights || '暂无详细信息'}}</text> <!--【改】强制模板重编译 -->
+      </view>
+
+      <view class="divider"></view>
+
+      <view class="section">
+        <view class="section-header">
+          <text class="section-icon">👨🍳</text>
+          <text class="section-title">制作工艺</text>
+        </view>
+        <text class="section-content">{{food.craft || '暂无详细信息'}}</text> <!--【改】强制模板重编译 -->
+      </view>
+
+      <view class="divider"></view>
+
+      <view class="section">
+        <view class="section-header">
+          <text class="section-icon">🏪</text>
+          <text class="section-title">推荐店铺</text>
+        </view>
+        <view class="shop-list">
+          <view class="shop-item" wx:for="{{food.shops || []}}" wx:key="name" bindtap="onShopTap" data-address="{{item.address}}" data-name="{{item.name}}" data-phone="{{item.phone}}" data-latitude="{{item.latitude}}" data-longitude="{{item.longitude}}">
+            <view class="shop-info">
+              <text class="shop-name">{{item.name}}</text>
+              <text class="shop-address">{{item.address}}</text>
+            </view>
+            <view class="shop-actions">
+              <text class="shop-phone">📞 {{item.phone}}</text>
+              <text class="nav-icon">📍 导航</text>
+            </view>
+          </view>
+          <view class="no-shop" wx:if="!food.shops || food.shops.length === 0">
+            <text class="no-shop-text">暂无推荐店铺信息</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="divider"></view>
+
+      <view class="section">
+        <view class="section-header">
+          <text class="section-icon">💡</text>
+          <text class="section-title">温馨提示</text>
+        </view>
+        <view class="tips-list">
+          <text class="tip-item">• 建议提前到店，避免排队</text>
+          <text class="tip-item">• 口味偏酸辣，可提前告知调整</text>
+          <text class="tip-item">• 部分店铺只收现金，请提前准备</text>
+        </view>
+      </view>
+
+      <view class="bottom-spacing"></view>
+    </view>
+  </scroll-view>
+
+  <view class="bottom-bar">
+    <view class="action-btn center" bindtap="onBack">
+      <text class="btn-text">返回</text>
+    </view>
+  </view>
+</view>

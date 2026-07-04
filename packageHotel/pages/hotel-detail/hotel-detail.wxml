@@ -1,0 +1,198 @@
+<view class="detail-container">
+  <view class="loading" wx:if="{{loading}}">
+    <view class="loading-icon"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <block wx:else>
+    <view class="hotel-detail" wx:if="{{hotel}}">
+      <view class="custom-nav">
+        <view class="back-btn" bindtap="onBack">
+          <text class="back-icon">←</text>
+        </view>
+        <text class="nav-title">住宿详情</text>
+        <view class="nav-placeholder"></view>
+      </view>
+
+      <view class="swiper-wrapper">
+        <swiper class="hotel-swiper" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff" autoplay circular bindchange="onSwiperChange">
+          <block wx:for="{{hotel.images}}" wx:key="index">
+            <swiper-item>
+              <image class="swiper-image" src="{{item}}" mode="aspectFill" lazy-load bindtap="onImageTap"></image>
+            </swiper-item>
+          </block>
+        </swiper>
+        <view class="swiper-indicator">
+          <text class="current">{{currentSwiper + 1}}</text>
+          <text class="separator">/</text>
+          <text class="total">{{hotel.images.length}}</text>
+        </view>
+      </view>
+
+      <view class="info-section">
+        <view class="hotel-header">
+          <view class="hotel-name-row">
+            <text class="hotel-name">{{hotel.name}}</text>
+            <view class="hotel-tags">
+              <text class="tag" wx:for="{{hotel.tags}}" wx:key="index">{{item}}</text>
+            </view>
+          </view>
+          <view class="hotel-rating-row">
+            <view class="rating">
+              <text class="star">★★★★★</text>
+              <text class="rating-num">{{hotel.rating}}</text>
+              <text class="reviews">({{hotel.reviews}}条评价)</text>
+            </view>
+            <text class="distance">{{hotel.distance}}</text>
+          </view>
+        </view>
+
+        <view class="divider"></view>
+
+        <view class="price-section">
+          <view class="price-info">
+            <text class="price-label">起售价</text>
+            <view class="price-value">
+              <text class="currency">¥</text>
+              <text class="amount">{{hotel.price}}</text>
+              <text class="unit">/晚</text>
+            </view>
+          </view>
+          <view class="action-buttons">
+            <view class="action-btn call-btn {{hotel.phone ? '' : 'disabled'}}" bindtap="onCall">
+              <text class="iconfont icon-phone">📞</text>
+              <text class="btn-text">{{hotel.phone ? '电话' : '暂无号码'}}</text>
+            </view>
+            <view class="action-btn nav-btn" bindtap="onNavigate">
+              <text class="iconfont icon-nav">🗺️</text>
+              <text class="btn-text">导航</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="divider"></view>
+
+        <view class="address-section" bindtap="onNavigate">
+          <text class="section-title">📍 地址</text>
+          <text class="address-text">{{hotel.address}}</text>
+        </view>
+
+        <view class="divider"></view>
+
+        <view class="phone-section">
+          <text class="section-title">📞 联系电话</text>
+          <text class="phone-text" bindtap="onCall" wx:if="{{hotel.phone}}">{{hotel.phone}}</text>
+          <text class="phone-empty" wx:else>暂无联系电话信息</text>
+        </view>
+      </view>
+
+      <view class="section map-section">
+        <text class="section-title">🗺️ 位置导航</text>
+        <view class="map-container">
+          <view class="map-close-btn" bindtap="onCloseMap">
+            <text class="close-icon">✕</text>
+          </view>
+          <map
+            id="hotelMap"
+            class="hotel-map"
+            latitude="{{mapLatitude}}"
+            longitude="{{mapLongitude}}"
+            scale="14"
+            markers="{{markers}}"
+            show-location="{{true}}"
+            bindtap="onMapTap"
+          ></map>
+          <view class="map-loading" wx:if="{{mapLoading}}">
+            <view class="loading-icon"></view>
+            <text>正在获取位置...</text>
+          </view>
+        </view>
+        <view class="navigation-panel">
+          <view class="nav-modes">
+            <view class="nav-mode {{navMode === 'driving' ? 'active' : ''}}" data-mode="driving" bindtap="onNavModeChange">
+              <text class="mode-icon">🚗</text>
+              <text class="mode-text">驾车</text>
+            </view>
+            <view class="nav-mode {{navMode === 'walking' ? 'active' : ''}}" data-mode="walking" bindtap="onNavModeChange">
+              <text class="mode-icon">🚶</text>
+              <text class="mode-text">步行</text>
+            </view>
+            <view class="nav-mode {{navMode === 'transit' ? 'active' : ''}}" data-mode="transit" bindtap="onNavModeChange">
+              <text class="mode-icon">🚌</text>
+              <text class="mode-text">公交</text>
+            </view>
+          </view>
+          <view class="distance-info" wx:if="{{distanceInfo}}">
+            <text class="distance-text">{{distanceInfo}}</text>
+          </view>
+          <view class="nav-action-btn" bindtap="onStartNavigation">
+            <text>开始导航</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section facilities-section">
+        <text class="section-title">🏨 设施服务</text>
+        <view class="facilities-grid">
+          <view class="facility-item" wx:for="{{hotel.facilities}}" wx:key="index">
+            <text class="facility-icon">✓</text>
+            <text class="facility-name">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section room-section">
+        <text class="section-title">🛏️ 房型介绍</text>
+        <view class="room-list">
+          <view class="room-card" wx:for="{{hotel.roomTypes}}" wx:key="index" data-index="{{index}}" bindtap="onBookRoom">
+            <view class="room-info">
+              <view class="room-header">
+                <text class="room-name">{{item.name}}</text>
+                <view class="room-price">
+                  <text class="currency">¥</text>
+                  <text class="amount">{{item.price}}</text>
+                  <text class="unit">/晚</text>
+                </view>
+              </view>
+              <view class="room-details">
+                <text class="room-area">{{item.area}}</text>
+                <text class="room-bed">{{item.bed}}</text>
+              </view>
+              <view class="room-features">
+                <text class="feature-tag" wx:for="{{item.features}}" wx:for-item="feature" wx:key="idx">{{feature}}</text>
+              </view>
+            </view>
+            <view class="book-btn">
+              <text>预订</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="section desc-section">
+        <text class="section-title">📖 住宿介绍</text>
+        <text class="desc-text">{{hotel.description}}</text>
+      </view>
+
+      <view class="section highlights-section">
+        <text class="section-title">✨ 特色亮点</text>
+        <text class="highlights-text">{{hotel.highlights}}</text>
+      </view>
+
+      <view class="section policy-section">
+        <text class="section-title">📋 入住政策</text>
+        <text class="policy-text">{{hotel.policy}}</text>
+      </view>
+
+      <view class="bottom-action">
+        <view class="collect-btn {{isCollected ? 'collected' : ''}}" bindtap="onCollect">
+          <text class="collect-icon">{{isCollected ? '❤️' : '🤍'}}</text>
+          <text class="collect-text">{{isCollected ? '已收藏' : '收藏'}}</text>
+        </view>
+        <view class="book-now-btn" bindtap="onCall">
+          <text>电话预订</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

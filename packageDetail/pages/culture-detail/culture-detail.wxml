@@ -1,0 +1,114 @@
+<view class="culture-detail-container">
+  <view class="nav-bar" style="height: {{navBarHeight}}rpx; padding-top: {{safeAreaTop}}rpx;">
+    <view class="nav-back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">民俗体验</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <scroll-view class="content-area" scroll-y style="margin-top: {{contentTop}}rpx;">
+    <view class="detail-content" wx:if="{{cultureData}}">
+      <view class="header-image-wrapper">
+        <image class="header-image" src="{{cultureData.image}}" mode="aspectFill"></image>
+        <view class="header-overlay">
+          <text class="header-title">{{cultureData.name}}</text>
+          <view class="header-rating">
+            <text class="star">★★★★★</text>
+            <text class="score">{{cultureData.rating}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="info-section">
+        <view class="info-row">
+          <text class="info-icon">📍</text>
+          <text class="info-text">{{cultureData.location}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-icon">⏱</text>
+          <text class="info-text">体验时长：{{cultureData.duration}}</text>
+        </view>
+      </view>
+
+      <view class="section">
+        <text class="section-title">体验介绍</text>
+        <text class="section-content">{{cultureData.description}}</text>
+      </view>
+
+      <view class="section">
+        <text class="section-title">文化背景</text>
+        <text class="section-content">{{cultureData.background}}</text>
+      </view>
+
+      <view class="section">
+        <text class="section-title">体验特色</text>
+        <view class="feature-list">
+          <view class="feature-item" wx:for="{{cultureData.features}}" wx:key="index">
+            <text class="feature-icon">✓</text>
+            <text class="feature-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <text class="section-title">注意事项</text>
+        <view class="tips-list">
+          <view class="tips-item" wx:for="{{cultureData.tips}}" wx:key="index">
+            <text class="tips-icon">⚠</text>
+            <text class="tips-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="action-section">
+        <button class="book-btn" bindtap="onBook">立即预约</button>
+      </view>
+
+      <view class="bottom-space"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 预约表单弹窗 -->
+  <view class="booking-modal-root" wx:if="{{showBookForm}}">
+    <view class="booking-modal-mask" catchtap="handleMaskTap"></view>
+    <view class="booking-modal-panel">
+      <view class="modal-header">
+        <text class="modal-title">预约体验</text>
+        <view class="modal-close-btn" catchtap="closeBookingModal">✕</view>
+      </view>
+      <scroll-view class="modal-body" scroll-y>
+        <view class="form-row">
+          <text class="form-label">体验项目</text>
+          <text class="form-static-value">{{cultureData.name}}</text>
+        </view>
+        <view class="form-row">
+          <text class="form-label">姓名</text>
+          <input class="form-text-input" placeholder="请输入姓名" value="{{bookName}}" bindinput="handleNameInput" />
+        </view>
+        <view class="form-row">
+          <text class="form-label">手机号</text>
+          <input class="form-text-input" type="number" maxlength="11" placeholder="请输入手机号" value="{{bookPhone}}" bindinput="handlePhoneInput" />
+        </view>
+        <view class="form-row">
+          <text class="form-label">体验日期</text>
+          <picker mode="date" value="{{bookDate}}" bindchange="handleDateChange">
+            <view class="form-picker-value">{{bookDate || '请选择日期'}}</view>
+          </picker>
+        </view>
+        <view class="form-row">
+          <text class="form-label">人数</text>
+          <view class="counter-control">
+            <view class="counter-btn {{bookCount <= 1 ? 'counter-disabled' : ''}}" catchtap="decreaseCounter">−</view>
+            <text class="counter-display">{{bookCount}}</text>
+            <view class="counter-btn {{bookCount >= 99 ? 'counter-disabled' : ''}}" catchtap="increaseCounter">+</view>
+          </view>
+        </view>
+      </scroll-view>
+      <view class="modal-footer">
+        <view class="footer-cancel-btn" catchtap="closeBookingModal">取消</view>
+        <view class="footer-confirm-btn" catchtap="submitBookingForm">确认预约</view>
+      </view>
+    </view>
+  </view>
+</view>

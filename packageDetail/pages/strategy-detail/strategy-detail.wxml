@@ -1,0 +1,88 @@
+<view class="article-container">
+  <view class="header" style="padding-top: {{safeAreaTop}}rpx; height: {{navBarHeight}}rpx;">
+    <view class="back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="header-title">
+      <text class="title-text">{{ (article && article.title) || '加载中...' }}</text>
+    </view>
+    <view class="header-placeholder"></view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y="true">
+    <view class="loading-container" wx:if="{{ isLoading }}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <view class="article-content" wx:else>
+      <view class="cover-section" style="margin-top: {{navBarHeight}}rpx;">
+        <image
+          class="cover-image"
+          src="{{ (article && article.coverImage) || '/images/a1.jpg' }}"
+          mode="aspectFill"
+          lazy-load="{{ true }}"
+        ></image>
+        <view class="cover-overlay">
+          <text class="cover-title">{{ article && article.title }}</text>
+        </view>
+      </view>
+
+      <view class="article-meta">
+        <view class="meta-left">
+          <text class="category-tag">{{ article && article.category }}</text>
+          <text class="publish-date">{{ article && article.publishDate }}</text>
+        </view>
+        <view class="meta-right">
+          <text class="views-icon">👁</text>
+          <text class="views-count">{{ article && article.views }}</text>
+        </view>
+      </view>
+
+      <view class="article-body">
+        <block wx:for="{{ article && article.content }}" wx:key="index">
+          <view class="content-text" wx:if="{{ item.type === 'text' }}">
+            <text>{{ item.text }}</text>
+          </view>
+          
+          <view class="content-title" wx:if="{{ item.type === 'title' }}">
+            <text>{{ item.title }}</text>
+          </view>
+          
+          <view class="content-image-wrapper" wx:if="{{ item.type === 'image' }}">
+            <image
+              class="content-image"
+              src="{{ item.src }}"
+              mode="widthFix"
+              lazy-load="{{ true }}"
+              bindtap="onImageTap"
+              data-src="{{ item.src }}"
+            ></image>
+            <text class="image-caption" wx:if="{{ item.caption }}">{{ item.caption }}</text>
+          </view>
+        </block>
+      </view>
+
+      <view class="tips-section" wx:if="{{ article && article.tips }}">
+        <view class="tips-header">
+          <text class="tips-icon">💡</text>
+          <text class="tips-title">小贴士</text>
+        </view>
+        <view class="tips-content">
+          <text>{{ article && article.tips }}</text>
+        </view>
+      </view>
+
+      <view class="footer">
+        <text class="footer-text">© 2026 带你黔游 | 探索贵州之美</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="bottom-bar">
+    <view class="collect-btn {{ isCollected ? 'collected' : '' }}" bindtap="onCollect">
+      <text class="collect-icon">{{ isCollected ? '❤️' : '🤍' }}</text>
+      <text class="collect-text">{{ isCollected ? '已收藏' : '收藏' }}</text>
+    </view>
+  </view>
+</view>

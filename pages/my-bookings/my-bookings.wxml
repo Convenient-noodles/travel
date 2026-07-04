@@ -1,0 +1,82 @@
+<view class="bookings-container">
+  <view class="bookings-list" wx:if="{{!loading && bookings.length > 0}}">
+    <view
+      class="booking-card"
+      wx:for="{{bookings}}"
+      wx:key="id"
+      data-booking="{{item}}"
+      bindtap="onBookingTap"
+    >
+      <view class="booking-header">
+        <text class="booking-name">{{item.cultureName}}</text>
+        <view class="booking-status confirmed" wx:if="{{item.status !== 'cancelled'}}">
+          <text>已确认</text>
+        </view>
+        <view class="booking-status cancelled" wx:else>
+          <text>已取消</text>
+        </view>
+      </view>
+
+      <view class="booking-body">
+        <image class="booking-thumb" src="{{item.image}}" mode="aspectFill" wx:if="{{item.image}}"></image>
+        <view class="booking-thumb-placeholder" wx:else>🎭</view>
+        <view class="booking-info">
+          <view class="booking-row">
+            <text class="info-icon">📍</text>
+            <text class="info-text">{{item.location}}</text>
+          </view>
+          <view class="booking-row">
+            <text class="info-icon">⏱</text>
+            <text class="info-text">{{item.duration}}</text>
+          </view>
+          <view class="booking-row">
+            <text class="info-icon">📅</text>
+            <text class="info-text">{{item.date}} · {{item.count}}人</text>
+          </view>
+          <view class="booking-row">
+            <text class="info-icon">👤</text>
+            <text class="info-text">{{item.name}} · {{item.phone}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="booking-footer">
+        <text class="booking-time">{{item.createTimeStr}}</text>
+        <view class="footer-right">
+          <view class="sync-tag synced" wx:if="{{item.syncedToBackend !== false}}">
+            <text>☁️ 已同步</text>
+          </view>
+          <view class="sync-tag unsynced" wx:else catchtap="retrySync" data-id="{{item.id}}">
+            <text>⚠ 同步</text>
+          </view>
+          <view
+            wx:if="{{item.status !== 'cancelled'}}"
+            class="booking-cancel"
+            catchtap="onCancelBooking"
+            data-id="{{item.id}}"
+          >
+            <text>取消预约</text>
+          </view>
+          <view
+            wx:if="{{item.status === 'cancelled'}}"
+            class="booking-delete"
+            catchtap="onDeleteBooking"
+            data-id="{{item.id}}"
+          >
+            <text>删除</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{!loading && bookings.length === 0}}">
+    <view class="empty-icon">🎭</view>
+    <text class="empty-title">暂无预约</text>
+    <text class="empty-desc">在民俗体验页面预约后，将显示在这里</text>
+  </view>
+
+  <view class="loading-state" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>

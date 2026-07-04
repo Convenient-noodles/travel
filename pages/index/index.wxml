@@ -1,0 +1,79 @@
+<view class="home-container">
+  <view class="header">
+    <text class="header-title">带你黔游</text>
+    <view class="search-box" bindtap="goToSearch">
+      <text class="search-icon">🔍</text>
+      <text class="search-placeholder">搜索景点 / 美食 / 攻略</text>
+    </view>
+  </view>
+
+  <scroll-view class="content" scroll-y="true" enhanced="true" show-scrollbar="{{false}}"><!--【改】添加enhanced属性启用增强滚动，确保在overflow:hidden容器中正常工作-->
+    <swiper class="banner-swiper" indicator-dots="true" autoplay="true" interval="3000" circular="true">
+      <swiper-item wx:for="{{bannerList}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
+        <image class="banner-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="banner-title">{{item.title}}</view>
+      </swiper-item>
+    </swiper>
+
+    <view class="quick-entry">
+      <view class="quick-item" wx:for="{{quickEntry}}" wx:key="id" bindtap="goToList" data-type="{{item.type}}">
+        <view class="quick-icon" style="background: {{item.bgColor}};">{{item.icon}}</view>
+        <text class="quick-name">{{item.name}}</text>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">热门景点</text>
+        <text class="section-more" bindtap="goToScenicList">更多 ></text>
+      </view>
+      <scroll-view class="scenic-scroll" scroll-x="true">
+        <view class="scenic-card" wx:for="{{hotScenic}}" wx:key="id" bindtap="goToScenicDetail" data-id="{{item.id}}">
+          <image class="scenic-image" src="{{item.image}}" mode="aspectFill"></image>
+          <view class="scenic-info">
+            <text class="scenic-name">{{item.name}}</text>
+            <text class="scenic-location">{{item.location}}</text>
+            <view class="scenic-rating">
+              <text class="star">★★★★★</text>
+              <text class="score">{{item.rating}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">精选攻略</text>
+        <text class="section-more" bindtap="goToStrategyList">更多 ></text>
+      </view>
+      <view class="strategy-list">
+        <view class="strategy-item" wx:for="{{strategyList}}" wx:key="id" bindtap="goToStrategyDetail" data-id="{{item.id}}">
+          <image class="strategy-image" src="{{item.image}}" mode="aspectFill"></image>
+          <view class="strategy-content">
+            <text class="strategy-title">{{item.title}}</text>
+            <view class="strategy-meta">
+              <text class="strategy-author">{{item.author}}</text>
+              <text class="strategy-date">{{item.date}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="tab-bar"><!--【改】改用flex布局替代fixed定位，避免WebView渲染层问题-->
+    <view class="tab-item active">
+      <text class="tab-icon">🏠</text>
+      <text class="tab-text">首页</text>
+    </view>
+    <view class="tab-item" bindtap="goToDiscover">
+      <text class="tab-icon">🌍</text>
+      <text class="tab-text">发现</text>
+    </view>
+    <view class="tab-item" bindtap="goToMy">
+      <text class="tab-icon">👤</text>
+      <text class="tab-text">我的</text>
+    </view>
+  </view>
+</view>

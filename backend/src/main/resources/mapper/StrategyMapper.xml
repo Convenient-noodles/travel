@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tourism.mapper.StrategyMapper">
+
+    <select id="findAll" resultType="com.example.tourism.entity.Strategy">
+        SELECT * FROM strategies ORDER BY sort_order ASC, create_time DESC
+    </select>
+
+    <select id="findEnabled" resultType="com.example.tourism.entity.Strategy">
+        SELECT * FROM strategies WHERE is_enabled = 1 ORDER BY sort_order ASC, create_time DESC
+    </select>
+
+    <select id="findById" resultType="com.example.tourism.entity.Strategy">
+        SELECT * FROM strategies WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.example.tourism.entity.Strategy" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO strategies 
+        (title, content, cover_image, author, category, tips, view_count, like_count, sort_order, is_enabled, create_time, update_time)
+        VALUES 
+        (#{title}, #{content}, #{coverImage}, #{author}, #{category}, #{tips}, #{viewCount}, #{likeCount}, #{sortOrder}, #{isEnabled}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="com.example.tourism.entity.Strategy">
+        UPDATE strategies SET
+            title = #{title}, content = #{content}, cover_image = #{coverImage}, author = #{author},
+            category = #{category}, tips = #{tips}, sort_order = #{sortOrder}, is_enabled = #{isEnabled}, update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM strategies WHERE id = #{id}
+    </delete>
+
+    <update id="updateViewCount">
+        UPDATE strategies SET view_count = view_count + 1 WHERE id = #{id}
+    </update>
+
+    <update id="updateLikeCount">
+        UPDATE strategies SET like_count = like_count + 1 WHERE id = #{id}
+    </update>
+</mapper>
