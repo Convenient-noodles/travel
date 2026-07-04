@@ -115,6 +115,7 @@ Page({
 
     wx.getLocation({
       type: 'gcj02',
+      isHighAccuracy: true,
       success: (res) => {
         const userLocation = {
           latitude: res.latitude,
@@ -207,6 +208,7 @@ Page({
     } else {
       wx.getLocation({
         type: 'gcj02',
+        isHighAccuracy: true,
         success: (res) => {
           const userLocation = { latitude: res.latitude, longitude: res.longitude }
           this.setData({ userLocation })
@@ -227,6 +229,7 @@ Page({
     //【改】立即更新一次：标记点 + 路线 + 视野
     wx.getLocation({
       type: 'gcj02',
+      isHighAccuracy: true,
       success: (res) => {
         const userLocation = { latitude: res.latitude, longitude: res.longitude }
         this.setData({ userLocation })
@@ -239,6 +242,7 @@ Page({
     this.locationTimer = setInterval(() => {
       wx.getLocation({
         type: 'gcj02',
+        isHighAccuracy: true,
         success: (res) => {
           const userLocation = { latitude: res.latitude, longitude: res.longitude }
           this.setData({ userLocation })

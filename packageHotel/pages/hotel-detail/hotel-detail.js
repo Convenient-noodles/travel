@@ -213,6 +213,7 @@ Page({
 
     wx.getLocation({
       type: 'gcj02',
+      isHighAccuracy: true,
       success: (res) => {
         const userLocation = {
           latitude: res.latitude,
