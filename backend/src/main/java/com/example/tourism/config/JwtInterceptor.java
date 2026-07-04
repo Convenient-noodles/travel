@@ -16,6 +16,15 @@ import java.io.PrintWriter;
 public class JwtInterceptor implements HandlerInterceptor {
 
     private final JwtUtil jwtUtil;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private void writeUnauthorized(HttpServletResponse response, String message) throws Exception {
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter writer = response.getWriter();
+        writer.write(OBJECT_MAPPER.writeValueAsString(ResultUtil.unauthorized(message)));
+        writer.flush();
+        writer.close();
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -23,20 +32,12 @@ public class JwtInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Authorization");
 
         if (token == null || token.isEmpty()) {
-            response.setContentType("application/json;charset=UTF-8");
-            PrintWriter writer = response.getWriter();
-            writer.write(new ObjectMapper().writeValueAsString(ResultUtil.unauthorized("请先登录")));
-            writer.flush();
-            writer.close();
+            writeUnauthorized(response, "请先登录");
             return false;
         }
 
         if (!token.startsWith("Bearer ")) {
-            response.setContentType("application/json;charset=UTF-8");
-            PrintWriter writer = response.getWriter();
-            writer.write(new ObjectMapper().writeValueAsString(ResultUtil.unauthorized("token格式错误")));
-            writer.flush();
-            writer.close();
+            writeUnauthorized(response, "token格式错误");
             return false;
         }
 
@@ -44,11 +45,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         try {
             if (!jwtUtil.validateToken(token)) {
-                response.setContentType("application/json;charset=UTF-8");
-                PrintWriter writer = response.getWriter();
-                writer.write(new ObjectMapper().writeValueAsString(ResultUtil.unauthorized("token已过期")));
-                writer.flush();
-                writer.close();
+                writeUnauthorized(response, "token已过期");
                 return false;
             }
 
@@ -62,11 +59,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
             return true;
         } catch (Exception e) {
-            response.setContentType("application/json;charset=UTF-8");
-            PrintWriter writer = response.getWriter();
-            writer.write(new ObjectMapper().writeValueAsString(ResultUtil.unauthorized("token无效")));
-            writer.flush();
-            writer.close();
+            writeUnauthorized(response, "token无效");
             return false;
         }
     }

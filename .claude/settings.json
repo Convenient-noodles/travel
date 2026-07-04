@@ -3,7 +3,28 @@
     "allow": [
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(ls -la ~/.ssh/ 2>/dev/null || echo \"~/.ssh/ 目录不存在\")",
+      "Read(//c/Users/64003/.ssh/**)",
+      "Bash(ssh-keygen -t ed25519 -C \"gitee@64003\" -f ~/.ssh/id_ed25519 -N \"\")",
+      "Bash(git config *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(git rm *)",
+      "Bash(git count-objects *)",
+      "Bash(git reflog *)",
+      "Bash(git gc *)",
+      "Bash(npm --version)",
+      "Bash(java --version)",
+      "Bash(mvn --version)",
+      "Bash(mysql --version)",
+      "Bash(mysqladmin ping *)",
+      "Bash(ls -la ~/.claude/ 2>/dev/null || echo \"~/.claude/ 目录不存在\")",
+      "Read(//c/Users/64003/.claude/**)",
+      "Bash(mkdir -p \"c:\\\\Users\\\\64003\\\\Desktop\\\\wx--s\\\\.claude\\\\agents\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\64003\\Desktop\\wx--s\\.claude"
     ]
   }
 }

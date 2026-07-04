@@ -1,6 +1,6 @@
-console.error('=== FOOD-DETAIL.JS v20250603-LOADED ===') //【改】版本标记，确认文件被加载
+console.log('=== FOOD-DETAIL.JS v20250603-LOADED ===') // 版本标记，确认文件被加载
 const app = getApp()
-const { foodApi } = require('../../utils/api.js')
+const { request } = require('../../../utils/request')
 
 /**
  * 美食详情页面
@@ -8,7 +8,7 @@ const { foodApi } = require('../../utils/api.js')
 Page({
   data: {
     loading: true,
-    food: null,
+    food: {},          // 初始化为空对象，避免 WXML 访问 null 属性
     isCollected: false
   },
 
@@ -43,7 +43,7 @@ Page({
   loadFoodDetail: function (id) {
     this.setData({ loading: true })
 
-    foodApi.getFoodById(id).then(res => {
+    request({ url: '/foods/' + id, method: 'GET' }).then(res => {
       console.log('API Response:', res) //【改】添加调试日志
       console.log('res.data type:', typeof res.data) //【改】诊断日志
       console.log('res.data keys:', Object.keys(res.data)) //【改】诊断日志

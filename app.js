@@ -24,24 +24,53 @@ App({
     }
   },
 
-  // 🔒 获取并缓存 openid，用于订单归属校验
+  // 🔒 通过 wx.login 获取 code，发送到后端换取真实 openid
   initOpenid: function () {
-    const cached = wx.getStorageSync('openid')
+    var cached = wx.getStorageSync('openid')
     if (cached) {
       this.globalData.openid = cached
       return
     }
+    var that = this
     wx.login({
-      success: (res) => {
+      timeout: 10000,
+      success: function (res) {
         if (res.code) {
-          // 使用 code 作为临时 openid（正式环境应调用后端接口换取真实 openid）
-          const openid = 'wx_' + res.code
-          this.globalData.openid = openid
-          wx.setStorageSync('openid', openid)
-          console.log('[登录] 已获取用户标识')
+          // 将临时 code 发送到后端换取真实 openid
+          wx.request({
+            url: 'http://localhost:8080/api/public/wx/login',
+            method: 'POST',
+            data: { code: res.code },
+            timeout: 10000,
+            success: function (response) {
+              if (response.statusCode === 200 && response.data && response.data.data && response.data.data.openid) {
+                var openid = response.data.data.openid
+                that.globalData.openid = openid
+                wx.setStorageSync('openid', openid)
+                console.log('[登录] 已获取用户 openid')
+              } else {
+                that.fallbackOpenid(res.code)
+              }
+            },
+            fail: function () {
+              that.fallbackOpenid(res.code)
+            }
+          })
         }
+      },
+      fail: function (err) {
+        console.warn('[登录] wx.login 失败，生成本地标识:', err)
+        that.fallbackOpenid('local_' + Date.now())
       }
     })
+  },
+
+  // 后端不可用时的降级方案：基于 code 或时间戳生成本地标识
+  fallbackOpenid: function (seed) {
+    var openid = 'wx_' + seed
+    this.globalData.openid = openid
+    wx.setStorageSync('openid', openid)
+    console.warn('[登录] 后端 openid 兑换失败，使用本地标识（部分功能受限）')
   },
 
   getOpenid: function () {

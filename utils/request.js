@@ -10,6 +10,7 @@ const request = (options) => {
       url: BASE_URL + options.url,
       method: options.method || 'GET',
       data: options.data || {},
+      timeout: options.timeout || 15000,
       header: {
         'Content-Type': 'application/json'
       },
@@ -25,7 +26,9 @@ const request = (options) => {
         }
       },
       fail: (err) => {
-        reject(err)
+        const msg = `请求 ${options.method || 'GET'} ${options.url} 失败: ${err.errMsg || '未知错误'}`
+        console.error(msg)
+        reject(new Error(msg))
       }
     })
   })

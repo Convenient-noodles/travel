@@ -129,7 +129,9 @@ Page({
       if (backendStatus && backendStatus !== 'refunding') {
         this.syncStatusFromBackend(orderNo, backendStatus)
       }
-    }).catch(() => {})
+    }).catch(err => {
+      console.warn('[quietSync] 订单状态同步失败:', orderNo, err.message)
+    })
   },
 
   syncStatusFromBackend: function (orderNo, newStatus) {
@@ -154,7 +156,9 @@ Page({
         if (backendStatus && backendStatus !== order.status) {
           this.syncStatusFromBackend(order.orderNo, backendStatus)
         }
-      }).catch(() => {}).finally(() => {
+      }).catch(err => {
+      console.warn('[quietSync] 订单状态同步失败:', orderNo, err.message)
+    }).finally(() => {
         completed++
         if (completed >= total) {
           wx.stopPullDownRefresh()

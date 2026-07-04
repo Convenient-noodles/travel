@@ -91,7 +91,9 @@ Page({
       },
       fail: (err) => {
         console.error('wx.login 失败:', err)
-        this.saveUserInfo(avatarUrl, nickName.trim(), '')
+        this.setData({ isLoading: false })
+        wx.hideLoading()
+        wx.showToast({ title: '微信登录失败，请重试', icon: 'none', duration: 2000 })
       }
     })
   },

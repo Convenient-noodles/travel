@@ -211,7 +211,7 @@ public class OrderServiceImpl implements OrderService {
 
     private String generateOrderNo() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        int random = new Random().nextInt(9000) + 1000;
+        int random = java.util.concurrent.ThreadLocalRandom.current().nextInt(9000) + 1000;
         return ORDER_NO_PREFIX + sdf.format(new Date()) + random;
     }
 

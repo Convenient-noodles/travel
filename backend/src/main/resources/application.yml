@@ -1,11 +1,11 @@
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/tourism_db?useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
-    username: root
-    password: 123456
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:tourism_db}?useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
@@ -20,14 +20,19 @@ mybatis:
   type-aliases-package: com.example.tourism.entity
   configuration:
     map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
 
 # JWT配置
 jwt:
-  secret: tourism_admin_jwt_secret_key_2024
-  expire: 86400000
+  secret: ${JWT_SECRET:tourism_admin_jwt_secret_key_2024}
+  expire: ${JWT_EXPIRE:86400000}
 
 # 文件上传配置
 upload:
-  path: ./uploads
-  url: http://localhost:8080/uploads
+  path: ${UPLOAD_PATH:./uploads}
+  url: ${UPLOAD_URL:http://localhost:8080/uploads}
+
+# 微信小程序配置
+wx:
+  app-id: ${WX_APP_ID:wx192b49035cdcc74b}
+  app-secret: ${WX_APP_SECRET:dev-wx-secret-placeholder}

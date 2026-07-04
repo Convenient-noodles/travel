@@ -23,6 +23,7 @@ export const useUserStore = defineStore('user', {
           this.userInfo = res.data.userInfo
           this.roles = res.data.userInfo.role ? [res.data.userInfo.role] : []
           localStorage.setItem('token', res.data.token)
+          localStorage.setItem('userRoles', JSON.stringify(this.roles))
           return true
         } else {
           ElMessage.error(res.message || '登录失败')
@@ -35,22 +36,26 @@ export const useUserStore = defineStore('user', {
     },
 
     /**
-     * 本地 Mock 登录（仅开发环境降级用）
+     * 本地 Mock 登录（仅在 import.meta.env.DEV 时可用）
      * 🔒 生产环境真实认证由后端 BCrypt 处理，不依赖此 mock
      */
     async mockLogin(loginForm) {
+      // 仅在开发环境下允许 mock 登录
+      if (import.meta.env.PROD) {
+        ElMessage.error('用户名或密码错误')
+        return false
+      }
       if (loginForm.username === 'admin' && loginForm.password === 'admin123') {
         this.token = 'mock_token_' + Date.now()
         this.userInfo = {
           id: 1,
           username: 'admin',
           nickname: '超级管理员',
-          role: 'super_admin',
-          phone: '13800138000',
-          email: 'admin@example.com'
+          role: 'super_admin'
         }
         this.roles = ['super_admin']
         localStorage.setItem('token', this.token)
+        localStorage.setItem('userRoles', JSON.stringify(this.roles))
         return true
       } else {
         ElMessage.error('用户名或密码错误')
@@ -81,6 +86,7 @@ export const useUserStore = defineStore('user', {
         this.userInfo = null
         this.roles = []
         localStorage.removeItem('token')
+        localStorage.removeItem('userRoles')
       }
     },
 

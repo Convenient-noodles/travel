@@ -1,7 +1,9 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
-const service = axios
+const service = axios.create({
+  timeout: 15000
+})
 
 service.interceptors.request.use(
   (config) => {
@@ -22,6 +24,7 @@ service.interceptors.response.use(
     if (res.code === 401) {
       ElMessage.error('登录已过期，请重新登录')
       localStorage.removeItem('token')
+      localStorage.removeItem('userRoles')
       window.location.href = '/login'
       return Promise.reject(new Error('登录已过期'))
     }
@@ -31,6 +34,7 @@ service.interceptors.response.use(
     if (error.response?.status === 401) {
       ElMessage.error('登录已过期，请重新登录')
       localStorage.removeItem('token')
+      localStorage.removeItem('userRoles')
       window.location.href = '/login'
     } else if (error.response?.status === 403) {
       ElMessage.error('没有权限访问该资源')

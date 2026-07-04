@@ -178,6 +178,16 @@ router.beforeEach((to, from, next) => {
   } else if (to.name === 'Login' && token) {
     next({ name: 'Dashboard' })
   } else {
+    // 检查角色权限
+    if (to.meta.roles && to.meta.roles.length > 0) {
+      const userStore = JSON.parse(localStorage.getItem('userRoles') || '[]')
+      const hasRole = to.meta.roles.some(r => userStore.includes(r))
+      if (!hasRole) {
+        NProgress.done()
+        next({ name: 'Dashboard' })
+        return
+      }
+    }
     next()
   }
 })

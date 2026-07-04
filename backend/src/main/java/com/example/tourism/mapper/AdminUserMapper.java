@@ -15,6 +15,9 @@ public interface AdminUserMapper {
 
     List<AdminUser> findAll();
 
+    /** 返回用户总数（逻辑删除除外），用于 Dashboard 统计，避免加载全部记录到内存 */
+    long countAll();
+
     int insert(AdminUser adminUser);
 
     int update(AdminUser adminUser);

@@ -15,6 +15,10 @@
         SELECT * FROM admin_users WHERE delete_time IS NULL ORDER BY create_time DESC
     </select>
 
+    <select id="countAll" resultType="long">
+        SELECT COUNT(*) FROM admin_users WHERE delete_time IS NULL
+    </select>
+
     <insert id="insert" parameterType="com.example.tourism.entity.AdminUser">
         INSERT INTO admin_users (username, password, nickname, phone, email, avatar, role, status, create_time, update_time)
         VALUES (#{username}, #{password}, #{nickname}, #{phone}, #{email}, #{avatar}, #{role}, #{status}, #{createTime}, #{updateTime})

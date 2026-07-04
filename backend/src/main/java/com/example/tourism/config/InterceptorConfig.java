@@ -25,9 +25,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/api/admin/banners/enabled")
                 .excludePathPatterns("/api/admin/strategies/enabled") // 【改】添加攻略公开接口
                 .excludePathPatterns("/api/admin/strategies/*") // 【改】允许公开访问单个攻略详情
-                .excludePathPatterns("/api/admin/dashboard/**") //【改】添加dashboard公开接口
                 .excludePathPatterns("/api/admin/orders/public/**")
                 .excludePathPatterns("/api/admin/bookings/public/**")
-                .excludePathPatterns("/api/upload");
+                .excludePathPatterns("/api/public/**"); // 【改】明确排除公开接口
     }
 }

@@ -57,7 +57,10 @@ public class OrderController {
 
     @PostMapping("/public/pay/{orderNo}")
     public ResultUtil publicPayCallback(@PathVariable String orderNo, @RequestBody Map<String, String> params) {
-        String transactionId = params.getOrDefault("transactionId", "SIMULATED_TXN");
+        String transactionId = params.get("transactionId");
+        if (transactionId == null || transactionId.isBlank()) {
+            return ResultUtil.error("缺少交易流水号");
+        }
         boolean success = orderService.processPaymentCallback(orderNo, transactionId);
         if (!success) {
             return ResultUtil.error("支付回调处理失败");

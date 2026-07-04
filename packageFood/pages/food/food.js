@@ -1,5 +1,5 @@
 const app = getApp()
-const { foodApi } = require('../../utils/api.js')
+const { request } = require('../../../utils/request')
 
 /**
  * 美食推荐页面
@@ -88,11 +88,15 @@ Page({
     this.setData({ loading: true })
 
     // 调用后端API获取数据
-    foodApi.getFoodList({
-      category: currentCategory,
-      page: page,
-      pageSize: pageSize,
-      status: 1
+    request({
+      url: '/foods',
+      method: 'GET',
+      data: {
+        category: currentCategory,
+        page: page,
+        pageSize: pageSize,
+        status: 1
+      }
     }).then(res => {
       const result = res.data
       const list = result.list || []
